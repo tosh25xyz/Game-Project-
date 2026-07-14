@@ -13,8 +13,8 @@ int main(void)
 
     BattleScene battle;
     InitBattleScene(&battle,
-                    "Hero", "Assets&resources/gojo3.png", 4, 3,
-                    "Goblin", "Assets&resources/geto.png", 4, 3
+                    "Nasif", "Assets&resources/gojo-nasif.png", 4, 3,
+                    "Zarif", "Assets&resources/geto-nasif.png", 4, 3
                 );
 
     while (!WindowShouldClose()) {

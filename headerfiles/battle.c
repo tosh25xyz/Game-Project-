@@ -110,7 +110,7 @@ void InitBattleScene(BattleScene *battle,
     battle->enemy.tint = WHITE;
     battle->enemy.flashTimer = 0.0f;
     InitCharacterSprite(&battle->enemy, enemySpritePath, enemyFrameCols, enemyFrameRows, true);
-    strcpy(battle->playerMoves[0].name, "Nasif's Slash");
+    strcpy(battle->playerMoves[0].name, "Nasif's 50 Note Slash");
     battle->playerMoves[0].minDamage = 5;
     battle->playerMoves[0].maxDamage = 15;
 
@@ -118,11 +118,11 @@ void InitBattleScene(BattleScene *battle,
     battle->playerMoves[1].minDamage = 16;
     battle->playerMoves[1].maxDamage = 17;
 
-    strcpy(battle->playerMoves[2].name, "BUSTY  RED  HEAD");
+    strcpy(battle->playerMoves[2].name, "BUSTY  RED  HEAD Flash");
     battle->playerMoves[2].minDamage = 20;
     battle->playerMoves[2].maxDamage = 30;
 
-    strcpy(battle->playerMoves[3].name, "NASIF X ZARIF Poke");
+    strcpy(battle->playerMoves[3].name, "NASIF Poke");
     battle->playerMoves[3].minDamage = 3;
     battle->playerMoves[3].maxDamage = 6;
 
@@ -141,7 +141,7 @@ void InitBattleScene(BattleScene *battle,
     battle->enemyMoves[2].minDamage = 14;
     battle->enemyMoves[2].maxDamage = 25;
 
-    strcpy(battle->enemyMoves[3].name, "ONLY MINOR SLAM");
+    strcpy(battle->enemyMoves[3].name, "ONLY MINOR SLASH");
     battle->enemyMoves[3].minDamage = 16;
     battle->enemyMoves[3].maxDamage = 17;
 
