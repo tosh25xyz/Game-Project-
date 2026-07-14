@@ -2,8 +2,8 @@
  * map_engine.c  --  JJK World Map Engine  (implementation)
  *
  * Renderer backend : Raylib
- * Tile size        : 16 × 16 px
- * Sheet layout     : 32 columns wide (512 px sheet ÷ 16)
+ * Tile size        : 32 × 32 px
+ * Sheet layout     : 16 columns wide (512 px sheet ÷ 32)
  *
  * Swap DrawTile_Raylib() for an SDL2 equivalent if needed — all other
  * logic (culling, layer ordering, camera math) is backend-agnostic.
@@ -22,7 +22,7 @@
  * ══════════════════════════════════════════════════════════════════════════ */
 
 /**
- * Draw a single 16×16 tile from the sheet to the screen.
+ * Draw a single 32×32 tile from the sheet to the screen.
  *
  * @param tileset   Loaded Raylib Texture2D of the PNG sheet
  * @param tileID    Linear tile index (< 0 → skip)

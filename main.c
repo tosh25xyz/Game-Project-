@@ -166,7 +166,7 @@ int main(void)
     SetTargetFPS(TARGET_FPS);
 
     /* ── Load tileset ─────────────────────────────────────────────────── */
-    Texture2D tileset = LoadTilesetWithMagentaMask("tileset_final_test_output.png");
+    Texture2D tileset = LoadTilesetWithMagentaMask("tileset_tokyo.png");
     if (tileset.id == 0) {
         CloseWindow();
         return 1;
@@ -182,9 +182,10 @@ int main(void)
     }
 
     /* ── Initialise player at tile (3, 4) = centre of walkable grass ─── */
+    /* Spawn at col 12, row 3 — inside Shibuya district walkable sidewalk */
     Player player = {
-        .x    = 3 * TILE_SIZE + 2.0f,
-        .y    = 4 * TILE_SIZE + 2.0f,
+        .x    = 12 * TILE_SIZE + 4.0f,
+        .y    =  3 * TILE_SIZE + 4.0f,
         .velX = 0.0f,
         .velY = 0.0f
     };
