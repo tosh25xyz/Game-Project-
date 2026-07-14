@@ -18,7 +18,7 @@
 
 #define ATTACK_FRAME_COUNT 4
 #define ATTACK_FRAME_SPEED 0.08f
-#define IDLE_FRAME_SPEED 0.20f
+#define IDLE_FRAME_SPEED 0.30f
 
 static float Vec2Distance(Vector2 a, Vector2 b)
 {
@@ -93,7 +93,7 @@ void InitBattleScene(BattleScene *battle,
     battle->player.currentHp = 100;
     battle->player.displayedHp = 100;
     
-    battle->player.basePos = (Vector2){150, 400 };
+    battle->player.basePos = (Vector2){270, 500 };
     battle->player.pos = battle->player.basePos;
     battle->player.tint = WHITE;
     battle->player.flashTimer = 0.0f;
@@ -105,12 +105,12 @@ void InitBattleScene(BattleScene *battle,
     battle->enemy.currentHp = 100;
     battle->enemy.displayedHp = 100;
    
-    battle->enemy.basePos = (Vector2){ 1140, 150 };
+    battle->enemy.basePos = (Vector2){ 1050, 510 };
     battle->enemy.pos = battle->enemy.basePos;
     battle->enemy.tint = WHITE;
     battle->enemy.flashTimer = 0.0f;
     InitCharacterSprite(&battle->enemy, enemySpritePath, enemyFrameCols, enemyFrameRows, true);
-    strcpy(battle->playerMoves[0].name, "Nasif's Slash");
+    strcpy(battle->playerMoves[0].name, "Nasif's 50 note Slash");
     battle->playerMoves[0].minDamage = 5;
     battle->playerMoves[0].maxDamage = 15;
 
@@ -118,11 +118,11 @@ void InitBattleScene(BattleScene *battle,
     battle->playerMoves[1].minDamage = 16;
     battle->playerMoves[1].maxDamage = 17;
 
-    strcpy(battle->playerMoves[2].name, "BUSTY  RED  HEAD");
+    strcpy(battle->playerMoves[2].name, "BUSTY  RED  HEAD FLASH");
     battle->playerMoves[2].minDamage = 20;
     battle->playerMoves[2].maxDamage = 30;
 
-    strcpy(battle->playerMoves[3].name, "NASIF X ZARIF Poke");
+    strcpy(battle->playerMoves[3].name, "NASIF POKE");
     battle->playerMoves[3].minDamage = 3;
     battle->playerMoves[3].maxDamage = 6;
 
@@ -141,7 +141,7 @@ void InitBattleScene(BattleScene *battle,
     battle->enemyMoves[2].minDamage = 14;
     battle->enemyMoves[2].maxDamage = 25;
 
-    strcpy(battle->enemyMoves[3].name, "ONLY MINOR SLAM");
+    strcpy(battle->enemyMoves[3].name, "ONLY MINOR SLASH");
     battle->enemyMoves[3].minDamage = 16;
     battle->enemyMoves[3].maxDamage = 17;
 
@@ -157,12 +157,14 @@ void InitBattleScene(BattleScene *battle,
 
     battle->rewardExp = 0;
     battle->rewardCoins = 0;
+    battle->background = LoadTexture("Assets&resources/battle2.png");
 }
 
 void UnloadBattleScene(BattleScene *battle)
 {
     UnloadTexture(battle->player.sprite);
     UnloadTexture(battle->enemy.sprite);
+    UnloadTexture(battle->background);
 }
 
 int RollDamage(Move *move)
@@ -415,8 +417,18 @@ void UpdateBattleScene(BattleScene *battle, float dt)
 }
 void DrawBattleScene(BattleScene *battle)
 {
-    ClearBackground(BLACK);
-    DrawLine(0, 700, 2000, 700, BLUE);
+    ClearBackground(RAYWHITE);
+     DrawTexturePro(
+        battle->background,
+        (Rectangle){ 0, 0, (float)battle->background.width, (float)battle->background.height },
+        (Rectangle){ 0, 0, 1500, 900 },   // screen-এর যত বড়/height, ততটাই stretch হবে
+        (Vector2){ 0, 0 },
+        0.0f,
+        WHITE
+    );
+
+   
+    //DrawLine(0, 700, 2000, 700, BLUE);
     float scale =2.0f;
     Rectangle playerDest = {
     battle->player.pos.x,
@@ -433,7 +445,7 @@ Vector2 origin={0,0};
     battle->enemy.frameHeight / scale
 };
     DrawTexturePro(battle->enemy.sprite, battle->enemy.frameRec, enemyDest,origin,0.0f, battle->enemy.tint);
-    DrawHpBar(&battle->player, (Vector2){ 60, 620 }, 300, 30);
+    DrawHpBar(&battle->player, (Vector2){ 60, 60 }, 300, 30);
     DrawHpBar(&battle->enemy, (Vector2){ 1140, 60 }, 300, 30);
 
     if (battle->state == BATTLE_PLAYER_MENU) {

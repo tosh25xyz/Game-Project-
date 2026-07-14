@@ -27,7 +27,7 @@ int main()
     SetTargetFPS(60);
     srand((unsigned int)time(NULL));
     // Load texture
-    Texture2D texture = LoadTexture("Assets&resources/player.png");
+    Texture2D texture = LoadTexture("Assets&resources/gojo normal walk.png");
     Texture2D tileset = LoadTexture("Assets&resources/tiles.png");
 
     int frameWidth = texture.width / 4;
@@ -78,8 +78,8 @@ int main()
             if (encounter && IsKeyPressed(KEY_SPACE))
             {
                 InitBattleScene(&battle,
-                    "NASIF", "Assets&resources/hero_battle.png", 4, 3,
-                    "ZARIF", "Assets&resources/goblin_battle.png", 4, 3
+                    "NASIF", "Assets&resources/gojo-nasif.png", 4, 3,
+                    "ZARIF", "Assets&resources/geto-nasif.png", 4, 3
                 );
                 mode = MODE_BATTLE;
             }

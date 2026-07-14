@@ -73,6 +73,7 @@ typedef struct BattleScene {
     // Rewards, rolled once when entering BATTLE_WIN
     int rewardExp;
     int rewardCoins;
+    Texture2D background;
 } BattleScene;
 
 void InitBattleScene(BattleScene *battle, const char *playerName, 
