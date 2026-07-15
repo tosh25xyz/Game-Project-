@@ -126,7 +126,11 @@ void InitBattleScene(BattleScene *battle,
     battle->playerMoves[3].minDamage = 3;
     battle->playerMoves[3].maxDamage = 6;
 
-    battle->moveCount = 4;
+    strcpy(battle->playerMoves[4].name, " DOMAIN EXPANSION: RAGEBAIT ");
+    battle->playerMoves[4].minDamage = 25;
+    battle->playerMoves[4].maxDamage = 60;
+
+    battle->moveCount = 5;
     battle->selectedMoveIndex = 0;
 
     strcpy(battle->enemyMoves[0].name, " MINOR Bite ");
@@ -280,10 +284,21 @@ void UpdateBattleScene(BattleScene *battle, float dt)
         if (IsKeyPressed(KEY_ENTER)) chosen = battle->selectedMoveIndex;
 
         if (chosen >= 0 && chosen < battle->moveCount) {
-            battle->pendingMove = &battle->playerMoves[chosen];
-            battle->state = BATTLE_PLAYER_ATTACK_IN;
-            battle->stateTimer = 0.0f;
+            if(chosen!=4)
+            {
+                battle->pendingMove = &battle->playerMoves[chosen];
+                battle->state = BATTLE_PLAYER_ATTACK_IN;
+                battle->stateTimer = 0.0f;
+            }
+            else if (chosen==4 && battle->player.currentHp<=50)
+            {
+                battle->pendingMove = &battle->playerMoves[chosen];
+                battle->state = BATTLE_PLAYER_ATTACK_IN;
+                battle->stateTimer = 0.0f;
+            }
+            
         }
+        
     }
     else if (battle->state == BATTLE_PLAYER_ATTACK_IN) {
         if (battle->stateTimer == dt) {

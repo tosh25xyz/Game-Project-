@@ -41,7 +41,7 @@ int main()
 
     float frameTime = 0.0f;
     float frameSpeed = 0.15f;
-    // Battle STATE
+    
     bool encounter = false;
 
     InitTileRects(tileRects);

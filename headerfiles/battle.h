@@ -4,7 +4,7 @@
 #include "raylib.h"
 
 #define MAX_NAME_LEN 32
-#define MAX_MOVES 4
+#define MAX_MOVES 5
 
 typedef struct Character {
     char name[MAX_NAME_LEN];
