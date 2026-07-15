@@ -34,6 +34,7 @@ typedef struct Move {
     char name[MAX_NAME_LEN];
     int minDamage;
     int maxDamage;
+    int usedMoves;
 } Move;
 
 typedef enum BattleState {
@@ -63,13 +64,17 @@ typedef struct BattleScene {
 
     Move *pendingMove;
     int pendingDamage;
-
+    
     BattleState state;
     float stateTimer;
 
     char messageText[128];
     BattleState nextStateAfterMessage;
 
+    int move0;
+    int move1;
+    int move2;
+    int move3;
     // Rewards, rolled once when entering BATTLE_WIN
     int rewardExp;
     int rewardCoins;

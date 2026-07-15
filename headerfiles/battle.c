@@ -113,23 +113,24 @@ void InitBattleScene(BattleScene *battle,
     strcpy(battle->playerMoves[0].name, "Nasif's 50 note Slash");
     battle->playerMoves[0].minDamage = 5;
     battle->playerMoves[0].maxDamage = 15;
+    battle->playerMoves[0].usedMoves=2;
 
     strcpy(battle->playerMoves[1].name, "MOOD SWING STRIKE");
     battle->playerMoves[1].minDamage = 16;
     battle->playerMoves[1].maxDamage = 17;
-
+    battle->playerMoves[1].usedMoves=2;
     strcpy(battle->playerMoves[2].name, "BUSTY  RED  HEAD FLASH");
     battle->playerMoves[2].minDamage = 20;
     battle->playerMoves[2].maxDamage = 30;
-
+    battle->playerMoves[2].usedMoves=2;
     strcpy(battle->playerMoves[3].name, "NASIF POKE");
     battle->playerMoves[3].minDamage = 3;
     battle->playerMoves[3].maxDamage = 6;
-
+    battle->playerMoves[3].usedMoves=2;
     strcpy(battle->playerMoves[4].name, " DOMAIN EXPANSION: RAGEBAIT ");
     battle->playerMoves[4].minDamage = 25;
     battle->playerMoves[4].maxDamage = 60;
-
+    battle->playerMoves[4].usedMoves=-1;
     battle->moveCount = 5;
     battle->selectedMoveIndex = 0;
 
@@ -275,27 +276,41 @@ void UpdateBattleScene(BattleScene *battle, float dt)
             battle->selectedMoveIndex =
                 (battle->selectedMoveIndex - 1 + battle->moveCount) % battle->moveCount;
         }
-
+            
         int chosen = -1;
         if (IsKeyPressed(KEY_ONE)) chosen = 0;
         if (IsKeyPressed(KEY_TWO)) chosen = 1;
         if (IsKeyPressed(KEY_THREE)) chosen = 2;
         if (IsKeyPressed(KEY_FOUR)) chosen = 3;
-        if (IsKeyPressed(KEY_ENTER)) chosen = battle->selectedMoveIndex;
+        if (IsKeyPressed(KEY_ENTER)) 
+        {
+            chosen = battle->selectedMoveIndex;
+            
+        }
 
-        if (chosen >= 0 && chosen < battle->moveCount) {
+        if (chosen >= 0 && chosen < battle->moveCount   ) {
+            bool canUSE=false;
             if(chosen!=4)
             {
-                battle->pendingMove = &battle->playerMoves[chosen];
-                battle->state = BATTLE_PLAYER_ATTACK_IN;
-                battle->stateTimer = 0.0f;
+                canUSE=(battle->playerMoves[chosen].usedMoves !=0);
             }
             else if (chosen==4 && battle->player.currentHp<=50)
             {
+                canUSE=true;
+                
+            }
+            if(canUSE)
+            {
+                if(battle->playerMoves[chosen].usedMoves>0)
+                {
+                    battle->playerMoves[chosen].usedMoves--;
+                }
                 battle->pendingMove = &battle->playerMoves[chosen];
                 battle->state = BATTLE_PLAYER_ATTACK_IN;
                 battle->stateTimer = 0.0f;
             }
+            
+           
             
         }
         
