@@ -294,7 +294,7 @@ void UpdateBattleScene(BattleScene *battle, float dt)
             {
                 canUSE=(battle->playerMoves[chosen].usedMoves !=0);
             }
-            else if (chosen==4 && battle->player.currentHp<=50)
+            else if (chosen==4 && battle->enemy.currentHp<=50)
             {
                 canUSE=true;
                 
@@ -485,9 +485,41 @@ Vector2 origin={0,0};
             char line[64];
             snprintf(line, sizeof(line), "%d  %s", i + 1, battle->playerMoves[i].name);
             Color col;
+            // if(i==4)
+            // {
+            //     if(battle->enemy.currentHp<=50)
+            //     {
+            //         col=WHITE;
+            //     }
+            //     else
+            //     {
+            //         col=RED;
+            //     }
+            // }
+            // else if(battle->playerMoves[i].usedMoves==0)
+            // {
+            //     col=RED;
+            // }
+
             if(i==battle->selectedMoveIndex)
             {
-                 col=YELLOW;
+                if(i == 4 && battle->enemy.currentHp<=50)
+                {
+                    col=YELLOW;
+                }
+                else if(battle->playerMoves[i].usedMoves==0)
+                {
+                    col=RED;
+                }
+                else if(i==4)
+                {
+                    col=RED;
+                }
+                else
+                {
+                    col=YELLOW;
+                }
+
             }
             else
             {
