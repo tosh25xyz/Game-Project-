@@ -74,6 +74,7 @@ typedef struct BattleScene {
     int rewardExp;
     int rewardCoins;
     Texture2D background;
+    bool won;
 } BattleScene;
 
 void InitBattleScene(BattleScene *battle, const char *playerName, 

@@ -14,6 +14,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include "headerfiles/gamemode.h"
+#include "headerfiles/playerstats.c"
 // RANDOM ENCOUNTER FUNCTION
 //====================================================
 
@@ -48,8 +49,10 @@ int main()
     BattleScene battle;
     GameMode mode;
 
-    int playerMaxHp = 100;
-    int playerCurrentHp = 100;
+    PlayerStats playerstats;
+    // int playerMaxHp = 100;
+    // int playerCurrentHp = 100;
+    InitPlayerStats(&playerstats,"NASIF");
     while (!WindowShouldClose())
     {
 
@@ -83,9 +86,9 @@ int main()
                     "NASIF", "Assets&resources/gojo-nasif.png", 4, 3,
                     "ZARIF", "Assets&resources/geto-nasif.png", 4, 3
                 );
-                battle.player.maxHp = playerMaxHp;
-                battle.player.currentHp = playerCurrentHp;
-                battle.player.displayedHp = playerCurrentHp;
+                battle.player.maxHp =playerstats.maxHp;
+                battle.player.currentHp = playerstats.currentHp;
+                battle.player.displayedHp = playerstats.currentHp;
                 mode = MODE_BATTLE;
             }
         }
@@ -97,7 +100,12 @@ int main()
             }
             else
             {
-                 playerCurrentHp = battle.player.currentHp;
+                 playerstats.currentHp = battle.player.currentHp;
+                 playerstats.maxHp=battle.player.maxHp;
+                 if(battle.won)
+                 {
+                    GainExp(&playerstats,battle.rewardExp);
+                 }
                 encounter = false;
                 mode = MODE_OVERWORLD;
             }
@@ -118,10 +126,8 @@ int main()
             DrawCharacter(texture, frameRec, position, frameWidth, frameHeight);
             
            DrawMinor(encounter, screenWidth, screenHeight);
-           DrawText(
-    TextFormat("HP: %d/%d", playerCurrentHp, playerMaxHp),
-    20, 20, 25, RED
-);
+           DrawPlayerHud(&playerstats,20,20);
+
         }
         
         else if (mode == MODE_BATTLE)

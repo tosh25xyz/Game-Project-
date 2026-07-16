@@ -162,6 +162,7 @@ void InitBattleScene(BattleScene *battle,
 
     battle->rewardExp = 0;
     battle->rewardCoins = 0;
+    battle->won=false;
     battle->background = LoadTexture("Assets&resources/battle2.png");
 }
 
@@ -356,6 +357,7 @@ void UpdateBattleScene(BattleScene *battle, float dt)
             if(battle->enemy.currentHp<=0)
             {
                 battle->nextStateAfterMessage= BATTLE_WIN;
+                battle->won=true;
             }
             else
             {
