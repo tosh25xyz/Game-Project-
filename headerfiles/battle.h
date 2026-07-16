@@ -70,11 +70,6 @@ typedef struct BattleScene {
 
     char messageText[128];
     BattleState nextStateAfterMessage;
-
-    int move0;
-    int move1;
-    int move2;
-    int move3;
     // Rewards, rolled once when entering BATTLE_WIN
     int rewardExp;
     int rewardCoins;

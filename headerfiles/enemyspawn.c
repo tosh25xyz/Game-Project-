@@ -61,7 +61,7 @@ bool CheckPokemonEncounter(int currentTile, bool isMoving)
     if (currentTile == 0 && isMoving)
     {
         // Random encounter chance
-        int randomChance = GetRandomValue(0, 100);
+        int randomChance = GetRandomValue(0, 700);
 
         // Encounter trigger
         if (randomChance == 6)

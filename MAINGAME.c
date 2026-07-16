@@ -48,6 +48,8 @@ int main()
     BattleScene battle;
     GameMode mode;
 
+    int playerMaxHp = 100;
+    int playerCurrentHp = 100;
     while (!WindowShouldClose())
     {
 
@@ -81,6 +83,9 @@ int main()
                     "NASIF", "Assets&resources/gojo-nasif.png", 4, 3,
                     "ZARIF", "Assets&resources/geto-nasif.png", 4, 3
                 );
+                battle.player.maxHp = playerMaxHp;
+                battle.player.currentHp = playerCurrentHp;
+                battle.player.displayedHp = playerCurrentHp;
                 mode = MODE_BATTLE;
             }
         }
@@ -92,6 +97,7 @@ int main()
             }
             else
             {
+                 playerCurrentHp = battle.player.currentHp;
                 encounter = false;
                 mode = MODE_OVERWORLD;
             }
@@ -110,7 +116,12 @@ int main()
             DRAWLAYER4TH(tileset, tileRects, mapoverlap, TILE_SIZE);
             // Character
             DrawCharacter(texture, frameRec, position, frameWidth, frameHeight);
+            
            DrawMinor(encounter, screenWidth, screenHeight);
+           DrawText(
+    TextFormat("HP: %d/%d", playerCurrentHp, playerMaxHp),
+    20, 20, 25, RED
+);
         }
         
         else if (mode == MODE_BATTLE)
