@@ -5,19 +5,17 @@
 
 void collisionfunc(Vector2 *nextPos,Vector2 *position,int frameWidth,int frameHeight,int tilesize)
 {
-float scale = 3.0f;
+    float scale = 3.0f;
     float playerWidth = frameWidth / scale;
     float playerHeight = frameHeight / scale;
     int leftTile   = nextPos->x / (tilesize);
     int rightTile  = (nextPos->x + playerWidth - 1) / (tilesize);
     int topTile    = nextPos->y / (tilesize);
     int bottomTile = (nextPos->y + playerHeight - 1) / (tilesize);
-    if (
-    !IsBlocked(leftTile, topTile) &&
+    if (!IsBlocked(leftTile, topTile) &&
     !IsBlocked(rightTile, topTile) &&
     !IsBlocked(leftTile, bottomTile) &&
-    !IsBlocked(rightTile, bottomTile)
-)
+    !IsBlocked(rightTile, bottomTile))
 {
     *position = *nextPos;
 }

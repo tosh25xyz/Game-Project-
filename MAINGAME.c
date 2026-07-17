@@ -126,7 +126,7 @@ int main()
             DrawCharacter(texture, frameRec, position, frameWidth, frameHeight);
             
            DrawMinor(encounter, screenWidth, screenHeight);
-           DrawPlayerHud(&playerstats,20,20);
+           DrawPlayerHud(&playerstats,1140,20);
 
         }
         
