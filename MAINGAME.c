@@ -1,9 +1,14 @@
 #include "raylib.h"
 #include "raymath.h"
+
+// #define RAYGUI_IMPLEMENTATION
+// #include "raygui.h"
 // #include"character.h"
 #include "headerfiles/character.c"
-#include "raygui.c"
+
+
 #include "headerfiles/map.c"
+#include"headerfiles/menu.c"
 // #include"map.h"
 #include "headerfiles/collision.c"
 // #include"raygui.h"
@@ -48,9 +53,12 @@ int main()
 
     InitTileRects(tileRects);
     BattleScene battle;
-    GameMode mode;
+    GameMode  mode=MODE_GAME_MENU;
 
     PlayerStats playerstats;
+    MenuState menu;
+    InitMenu(&menu);
+    //Difficulty d;
     // int playerMaxHp = 100;
     // int playerCurrentHp = 100;
     InitPlayerStats(&playerstats,"NASIF");
@@ -60,6 +68,10 @@ int main()
         
 
         float dt = GetFrameTime();
+        // if(mode ==MODE_GAME_MENU)
+        // {
+        //     DifficultyEnemyHpMultiplier(d);
+        // }
 
         if (mode == MODE_OVERWORLD)
         {
@@ -116,8 +128,20 @@ int main()
 
         BeginDrawing();
         ClearBackground(BLACK);
+        if(mode==MODE_GAME_MENU)
+        {
+            UpdateDrawMenu(&menu,  screenWidth, screenHeight);
+            if(menu.startPressed)
+            {
+                mode=MODE_OVERWORLD;
+            }
+            if(menu.exitPressed)
+            {
+                break;
+            }
+        }
 
-        if (mode == MODE_OVERWORLD)
+        else if (mode == MODE_OVERWORLD)
         {
             DRAWLAYERFIRST(tileset, tileRects, map, TILE_SIZE);
             DRAWLAYERsecond(tileset, tileRects, basemaps, TILE_SIZE);
