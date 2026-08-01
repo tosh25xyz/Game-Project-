@@ -4,5 +4,7 @@ typedef enum GameMode
 {
     MODE_OVERWORLD,
     MODE_BATTLE,
-    PREVIEW_OF_ENEMY
+    MODE_GAME_START,
+    MODE_CHARACTER_SELECTION,
+    
 }GameMode ;

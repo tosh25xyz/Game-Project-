@@ -7,7 +7,7 @@ const int screenWidth = 1500;
 const int screenHeight = 900;
 void DrawCharacter(Texture2D texture, Rectangle frameRec, Vector2 position, int frameWidth, int frameHeight)
 {
-    Rectangle destRec = {position.x, position.y, frameWidth / 4.0f, frameHeight / 4.0f};
+    Rectangle destRec = {position.x, position.y, frameWidth / 3.0f, frameHeight / 3.0f};
     Vector2 origin = {0, 0};
     DrawTexturePro(texture, frameRec, destRec, origin, 0.0f, WHITE);
 }
