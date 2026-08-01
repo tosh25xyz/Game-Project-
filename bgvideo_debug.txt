@@ -1,0 +1,3 @@
+Command: ffmpeg -stream_loop -1 -i "Assets&resources/menu_bg.mp4" -f rawvideo -pix_fmt rgba -vf scale=1500:900 -r 24.00 -loglevel quiet -
+FileExists(videoPath): 1
+popen result: OK

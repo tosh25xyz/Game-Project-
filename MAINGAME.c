@@ -36,6 +36,7 @@ int main()
     Texture2D texture = LoadTexture("Assets&resources/gojo_matched_size.png");
     // texture = LoadTexture("Assets&resources/player.png");
     Texture2D tileset = LoadTexture("Assets&resources/tiles.png");
+   LoadMenuBackgroundVideo("Assets&resources/menu_bg.mp4", screenWidth, screenHeight, 24.0f);
 
     int frameWidth = texture.width / 4;
     int frameHeight = texture.height / 4;
@@ -164,6 +165,7 @@ int main()
         DrawFPS(10, 10);
         EndDrawing();
     }
+    UnloadMenuBackgroundVideo();
     UnloadBattleScene(&battle);
     UnloadTexture(texture);
     CloseWindow();

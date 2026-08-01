@@ -22,3 +22,5 @@ void InitMenu(MenuState *menu);
 static void DrawMenuBackdrop(int w, int h);
 float DifficultyEnemyHpMultiplier(Difficulty d);
 void UpdateDrawMenu(MenuState *menu, int screenW, int screenH);
+void LoadMenuBackgroundVideo(const char *videoPath, int width, int height, float fps);
+void UnloadMenuBackgroundVideo(void);
