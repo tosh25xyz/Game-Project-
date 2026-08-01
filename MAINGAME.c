@@ -28,7 +28,7 @@ int main()
     SetTargetFPS(60);
     srand((unsigned int)time(NULL));
     // Load texture
-    Texture2D texture = LoadTexture("Assets&resources/gojo normal walk.png");
+    Texture2D texture = LoadTexture("Assets&resources/gojo_player_size.png");
     Texture2D tileset = LoadTexture("Assets&resources/tiles.png");
 
     int frameWidth = texture.width / 4;
