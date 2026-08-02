@@ -19,7 +19,7 @@
 #include "raylib.h"
 
 #define RAYGUI_IMPLEMENTATION
-#include "raygui.h"
+#include "headerfiles/raygui.h"
 
 #include <math.h>
 

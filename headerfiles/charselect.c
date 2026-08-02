@@ -1,39 +1,6 @@
-
-
-#include "raylib.h"
-#include <stdbool.h>
-
-#define RAYGUI_IMPLEMENTATION
-#include "headerfiles/raygui.h"
-
+#include "charselect.h"
+#include "raygui.h"
 #include <stddef.h>
-#include <stdio.h>
-const int screenWidth = 1500;
-
-const int screenHeight = 900;
-typedef struct {
-    const char *name;
-    const char *spritePath;   /* preview image shown on the select screen */
-    const char *tagline;      /* short flavor line under the name */
-} CharacterOption;
-
-typedef struct {
-    int  selectedIndex;
-    bool confirmed;      /* true only on the frame "Select" is clicked */
-    bool backPressed;    /* true only on the frame "Back" is clicked   */
-} CharSelectState;
-
-void InitCharSelect(CharSelectState *cs);
-void LoadCharSelectAssets(void);
-void UnloadCharSelectAssets(void);
-void UpdateDrawCharSelect(CharSelectState *cs, int screenW, int screenH);
-
-int GetCharacterCount(void);
-const CharacterOption *GetCharacterOption(int index);
-
-
-//#include "charselect.h"
-
 
 /* --------------------------------------------------------------
    Edit this roster to match your actual assets. spritePath should
@@ -92,7 +59,7 @@ void UnloadCharSelectAssets(void)
 static void DrawCharSelectBackdrop(int w, int h)
 {
     DrawRectangleGradientV(0, 0, w, h,
-        (Color){ 18, 10, 22, 255 },
+        (Color){ 18, 10, 20, 255 },
         (Color){ 60, 20, 40, 255 });
 }
 
@@ -177,27 +144,3 @@ void UpdateDrawCharSelect(CharSelectState *cs, int screenW, int screenH)
     if (GuiButton(confirmBtn, "Select")) cs->confirmed = true;
     if (GuiButton(backBtn, "< Back"))    cs->backPressed = true;
 }
-
-int main()
-{
-    InitWindow(screenWidth, screenHeight, "Jujutsu Kaisen - raylib (C)");
-    CharSelectState charSelect; /* <-- new */
-    InitCharSelect(&charSelect);
-    LoadCharSelectAssets();
-    SetTargetFPS(144);
-    while (!WindowShouldClose())
-    {
-        BeginDrawing();
-        ClearBackground(BLACK);
-        
-            UpdateDrawCharSelect(&charSelect, screenWidth, screenHeight);
-
-        DrawFPS(10, 10);
-        EndDrawing();
-    }
-    UnloadCharSelectAssets();
-    CloseWindow();
-
-    return 0;
-}
-

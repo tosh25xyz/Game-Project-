@@ -5,10 +5,10 @@
 // #include "raygui.h"
 // #include"character.h"
 #include "headerfiles/character.c"
-
+#include "headerfiles/charselect.c"
 
 #include "headerfiles/map.c"
-#include"headerfiles/menu.c"
+#include "headerfiles/menu.c"
 // #include"map.h"
 #include "headerfiles/collision.c"
 // #include"raygui.h"
@@ -27,7 +27,7 @@ int main()
 {
 
     InitWindow(screenWidth, screenHeight, "Jujutsu Kaisen - raylib (C)");
-    Image icon=LoadImage("Assets&resources/jjk2.png");
+    Image icon = LoadImage("Assets&resources/jjk2.png");
     SetWindowIcon(icon);
     UnloadImage(icon);
     SetTargetFPS(60);
@@ -36,7 +36,7 @@ int main()
     Texture2D texture = LoadTexture("Assets&resources/gojo_matched_size.png");
     // texture = LoadTexture("Assets&resources/player.png");
     Texture2D tileset = LoadTexture("Assets&resources/tiles.png");
-   LoadMenuBackgroundVideo("Assets&resources/menu_bg.mp4", screenWidth, screenHeight, 24.0f);
+    LoadMenuBackgroundVideo("Assets&resources/menu_bg.mp4", screenWidth, screenHeight, 24.0f);
 
     int frameWidth = texture.width / 4;
     int frameHeight = texture.height / 4;
@@ -49,24 +49,25 @@ int main()
 
     float frameTime = 0.0f;
     float frameSpeed = 0.15f;
-    
+
     bool encounter = false;
 
     InitTileRects(tileRects);
     BattleScene battle;
-    GameMode  mode=MODE_GAME_MENU;
+    GameMode mode = MODE_GAME_MENU;
 
     PlayerStats playerstats;
     MenuState menu;
     InitMenu(&menu);
-    //Difficulty d;
-    // int playerMaxHp = 100;
-    // int playerCurrentHp = 100;
-    InitPlayerStats(&playerstats,"NASIF");
+    CharSelectState charSelect; /* <-- new */
+    InitCharSelect(&charSelect);
+    LoadCharSelectAssets();
+    // Difficulty d;
+    //  int playerMaxHp = 100;
+    //  int playerCurrentHp = 100;
+    InitPlayerStats(&playerstats, "NASIF");
     while (!WindowShouldClose())
     {
-
-        
 
         float dt = GetFrameTime();
         // if(mode ==MODE_GAME_MENU)
@@ -97,10 +98,9 @@ int main()
             if (encounter && IsKeyPressed(KEY_SPACE))
             {
                 InitBattleScene(&battle,
-                    "NASIF", "Assets&resources/gojo-nasif.png", 4, 3,
-                    "ZARIF", "Assets&resources/geto-nasif.png", 4, 3
-                );
-                battle.player.maxHp =playerstats.maxHp;
+                                "NASIF", "Assets&resources/gojo-nasif.png", 4, 3,
+                                "ZARIF", "Assets&resources/geto-nasif.png", 4, 3);
+                battle.player.maxHp = playerstats.maxHp;
                 battle.player.currentHp = playerstats.currentHp;
                 battle.player.displayedHp = playerstats.currentHp;
                 mode = MODE_BATTLE;
@@ -114,31 +114,52 @@ int main()
             }
             else
             {
-                 playerstats.currentHp = battle.player.currentHp;
-                 playerstats.maxHp=battle.player.maxHp;
-                 if(battle.won)
-                 {
-                    GainExp(&playerstats,battle.rewardExp);
-                 }
+                playerstats.currentHp = battle.player.currentHp;
+                playerstats.maxHp = battle.player.maxHp;
+                if (battle.won)
+                {
+                    GainExp(&playerstats, battle.rewardExp);
+                }
                 encounter = false;
                 mode = MODE_OVERWORLD;
             }
         }
 
-       
-
         BeginDrawing();
         ClearBackground(BLACK);
-        if(mode==MODE_GAME_MENU)
+        if (mode == MODE_GAME_MENU)
         {
-            UpdateDrawMenu(&menu,  screenWidth, screenHeight);
-            if(menu.startPressed)
+            UpdateDrawMenu(&menu, screenWidth, screenHeight);
+            if (menu.startPressed)
             {
-                mode=MODE_OVERWORLD;
+                mode = MODE_CHARACTER_SELECT;
             }
-            if(menu.exitPressed)
+            if (menu.exitPressed)
             {
                 break;
+            }
+        }
+        else if (mode == MODE_CHARACTER_SELECT) /* <-- new block */
+        {
+            UpdateDrawCharSelect(&charSelect, screenWidth, screenHeight);
+
+            if (charSelect.confirmed)
+            {
+                 const CharacterOption *chosen = GetCharacterOption(charSelect.selectedIndex);
+                // UnloadTexture(texture);
+                // texture = LoadTexture(chosen->spritePath);
+                // frameWidth = texture.width / 4;
+                // frameHeight = texture.height / 4;
+                // frameRec = (Rectangle){0, 0, frameWidth, frameHeight};
+
+                // playerstats = (PlayerStats){0};
+                 InitPlayerStats(&playerstats, chosen->name);
+                
+                mode = MODE_OVERWORLD;
+            }
+            if (charSelect.backPressed)
+            {
+                mode = MODE_GAME_MENU;
             }
         }
 
@@ -150,21 +171,21 @@ int main()
             DRAWLAYER4TH(tileset, tileRects, mapoverlap, TILE_SIZE);
             // Character
             DrawCharacter(texture, frameRec, position, frameWidth, frameHeight);
-            
-           DrawMinor(encounter, screenWidth, screenHeight);
-           DrawPlayerHud(&playerstats,1140,20);
 
+            DrawMinor(encounter, screenWidth, screenHeight);
+            DrawPlayerHud(&playerstats, 1140, 20);
         }
-        
+
         else if (mode == MODE_BATTLE)
-        { 
-            
+        {
+
             DrawBattleScene(&battle);
         }
-        
+
         DrawFPS(10, 10);
         EndDrawing();
     }
+    UnloadCharSelectAssets();
     UnloadMenuBackgroundVideo();
     UnloadBattleScene(&battle);
     UnloadTexture(texture);
