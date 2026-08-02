@@ -146,11 +146,11 @@ int main()
             if (charSelect.confirmed)
             {
                  const CharacterOption *chosen = GetCharacterOption(charSelect.selectedIndex);
-                // UnloadTexture(texture);
-                // texture = LoadTexture(chosen->spritePath);
-                // frameWidth = texture.width / 4;
-                // frameHeight = texture.height / 4;
-                // frameRec = (Rectangle){0, 0, frameWidth, frameHeight};
+                UnloadTexture(texture);
+                texture = LoadTexture(chosen->movement);
+                frameWidth = texture.width / 4;
+                frameHeight = texture.height / 4;
+                frameRec = (Rectangle){0, 0, frameWidth, frameHeight};
 
                 // playerstats = (PlayerStats){0};
                  InitPlayerStats(&playerstats, chosen->name);

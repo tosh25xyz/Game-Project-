@@ -8,6 +8,7 @@ typedef struct {
     const char *name;
     const char *spritePath;   /* preview image shown on the select screen */
     const char *tagline;      /* short flavor line under the name */
+    const char *movement;
 } CharacterOption;
 
 typedef struct {

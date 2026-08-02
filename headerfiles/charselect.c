@@ -8,10 +8,10 @@
    fine — doesn't need to be animated here).
    -------------------------------------------------------------- */
 static const CharacterOption roster[] = {
-    { "GOJO SATORU",     "Assets&resources/gojo.png", "The Strongest" },
-    { "SUKUNA",          "Assets&resources/sukuna.png",    "King of Curses" },
-    { "MEGUMI FUSHIGURO","Assets&resources/megumi.png",    "Ten Shadows User" },
-    { "NOBARA KUGISAKI", "Assets&resources/itadori.png",    "Straw Doll Technique" },
+    { "GOJO SATORU",     "Assets&resources/gojo.png", "The Strongest" ,"Assets&resources/gojo_matched_size.png"},
+    { "SUKUNA",          "Assets&resources/sukuna.png",    "King of Curses",  "Assets&resources/king.png" },
+    { "MEGUMI FUSHIGURO","Assets&resources/megumi.png",    "Ten Shadows User","Assets&resources/megumi2.png" },
+    { "ITADORI YUJI", "Assets&resources/itadori.png",    "RAW STRENGTH","Assets&resources/yuji3.png" },
 };
 #define ROSTER_COUNT (int)(sizeof(roster) / sizeof(roster[0]))
 
