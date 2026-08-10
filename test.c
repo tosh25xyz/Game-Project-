@@ -9,7 +9,7 @@
 
 
 // #include"raygui.h"
- const int screenWidth = 800;
+ const int screenWidth = 1500;
 const int screenHeight = 800;
 
 
@@ -30,9 +30,9 @@ while(!WindowShouldClose())
      BeginDrawing();
         ClearBackground(BLACK);
             DRAWLAYERFIRST(tileset, tileRects, map, TILE_SIZE);
-            DRAWLAYERsecond(tileset, tileRects, basemaps, TILE_SIZE);
-            DRAWLAYERTHIRD(tileset, tileRects, maps, TILE_SIZE);
-            DRAWLAYER4TH(tileset, tileRects, mapoverlap, TILE_SIZE);
+            // DRAWLAYERsecond(tileset, tileRects, basemaps, TILE_SIZE);
+            // DRAWLAYERTHIRD(tileset, tileRects, maps, TILE_SIZE);
+            // DRAWLAYER4TH(tileset, tileRects, mapoverlap, TILE_SIZE);
 
      DrawFPS(10, 10);
         EndDrawing();
