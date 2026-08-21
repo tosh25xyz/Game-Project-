@@ -21,7 +21,7 @@ int main()
     //srand((unsigned int)time(NULL));
 
     // texture = LoadTexture("Assets&resources/player.png");
-    Texture2D tileset = LoadTexture("Assets&resources/map.png");
+    Texture2D tileset = LoadTexture("Assets&resources/tiles.png");
 
     InitTileRects(tileRects);
 while(!WindowShouldClose())
@@ -30,9 +30,9 @@ while(!WindowShouldClose())
      BeginDrawing();
         ClearBackground(BLACK);
             DRAWLAYERFIRST(tileset, tileRects, map, TILE_SIZE);
-            // DRAWLAYERsecond(tileset, tileRects, basemaps, TILE_SIZE);
-            // DRAWLAYERTHIRD(tileset, tileRects, maps, TILE_SIZE);
-            // DRAWLAYER4TH(tileset, tileRects, mapoverlap, TILE_SIZE);
+            DRAWLAYERsecond(tileset, tileRects, basemaps, TILE_SIZE);
+            DRAWLAYERTHIRD(tileset, tileRects, maps, TILE_SIZE);
+            DRAWLAYER4TH(tileset, tileRects, mapoverlap, TILE_SIZE);
 
      DrawFPS(10, 10);
         EndDrawing();
