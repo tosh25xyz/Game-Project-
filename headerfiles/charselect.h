@@ -9,8 +9,22 @@ typedef struct {
     const char *spritePath;   /* preview image shown on the select screen */
     const char *tagline;      /* short flavor line under the name */
     const char *movement;
+    const char *fight;
+    const char *move1;
+    const char *move2;
+    const char *move3;
+    const char *move4;
+    // const CharacterMove *main;
+    
 } CharacterOption;
 
+// typedef struct{
+//      const char *move1;
+//      const char *move2;
+//     const char *move3;
+//      const char *move4;
+//      const char *move5;
+// } CharacterMove;
 typedef struct {
     int  selectedIndex;
     bool confirmed;      /* true only on the frame "Select" is clicked */

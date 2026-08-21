@@ -8,11 +8,17 @@
    fine — doesn't need to be animated here).
    -------------------------------------------------------------- */
 static const CharacterOption roster[] = {
-    { "GOJO SATORU",     "Assets&resources/gojo.png", "The Strongest" ,"Assets&resources/gojo_matched_size.png"},
-    { "SUKUNA",          "Assets&resources/sukuna.png",    "King of Curses",  "Assets&resources/king.png" },
-    { "MEGUMI FUSHIGURO","Assets&resources/megumi.png",    "Ten Shadows User","Assets&resources/megumi2.png" },
-    { "ITADORI YUJI", "Assets&resources/itadori.png",    "RAW STRENGTH","Assets&resources/yuji3.png" },
+    { "GOJO SATORU",     "Assets&resources/gojo.png", "The Strongest" ,"Assets&resources/gojo_matched_size.png","Assets&resources/gojo-nasif.png","gay","sex","with","me"},
+    { "SUKUNA",          "Assets&resources/sukuna.png",    "King of Curses",  "Assets&resources/king.png","Assets&resources/sukunafight.png","ara ara","dosta dosta","women","hehe"},
+    { "MEGUMI FUSHIGURO","Assets&resources/megumi.png",    "Ten Shadows User","Assets&resources/megumi2.png","Assets&resources/megumifight.png","choda holo","kake?","kivabe?","keno?" },
+    { "ITADORI YUJI", "Assets&resources/itadori.png",    "RAW STRENGTH","Assets&resources/yuji3.png","Assets&resources/yujifight.png","dld","dm","math","tushar" },
 };
+// static const CharacterMove fighter[] = {
+//     { "Blue Eyes",     "Purple Fragment", "Blue and Red" ,"DOMAIN:VOID","funky dance"},
+//     { "PIERCING",          "FLAME STRIKE",    "DISFIGURE",  "DOMAIN: SHRINE", "CHODA HOLO"},
+//     { "SUMMON","SHINEGAMI",    "Ten Shadows SHIKAGAMI","MAHOGORA" ," YAMETE "},
+//     { "PHYSICAL STRIKE", "BROTHER POWER",    "RAW STRENGTH","BLACK FLASH", "DOSHTA DOSHTA" },
+// };
 #define ROSTER_COUNT (int)(sizeof(roster) / sizeof(roster[0]))
 
 static Texture2D previewTextures[ROSTER_COUNT];

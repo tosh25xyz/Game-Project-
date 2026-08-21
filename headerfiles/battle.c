@@ -85,7 +85,7 @@ void InitBattleScene(BattleScene *battle,
                       const char *playerName, const char *playerSpritePath,
                       int playerFrameCols, int playerFrameRows,
                       const char *enemyName, const char *enemySpritePath,
-                      int enemyFrameCols, int enemyFrameRows)
+                      int enemyFrameCols, int enemyFrameRows,const char *move1,const char *move2,const char *move3,const char *move4)
 {
     strncpy(battle->player.name, playerName, MAX_NAME_LEN - 1);
     battle->player.name[MAX_NAME_LEN - 1] = '\0';
@@ -110,24 +110,24 @@ void InitBattleScene(BattleScene *battle,
     battle->enemy.tint = WHITE;
     battle->enemy.flashTimer = 0.0f;
     InitCharacterSprite(&battle->enemy, enemySpritePath, enemyFrameCols, enemyFrameRows, true);
-    strcpy(battle->playerMoves[0].name, "Nasif's 50 note Slash");
+    strcpy(battle->playerMoves[0].name, move1);
     battle->playerMoves[0].minDamage = 5;
     battle->playerMoves[0].maxDamage = 15;
     battle->playerMoves[0].usedMoves=2;
 
-    strcpy(battle->playerMoves[1].name, "MOOD SWING STRIKE");
+    strcpy(battle->playerMoves[1].name, move2);
     battle->playerMoves[1].minDamage = 16;
     battle->playerMoves[1].maxDamage = 17;
     battle->playerMoves[1].usedMoves=2;
-    strcpy(battle->playerMoves[2].name, "BUSTY  RED  HEAD FLASH");
+    strcpy(battle->playerMoves[2].name, move3);
     battle->playerMoves[2].minDamage = 20;
     battle->playerMoves[2].maxDamage = 30;
     battle->playerMoves[2].usedMoves=2;
-    strcpy(battle->playerMoves[3].name, "NASIF POKE");
+    strcpy(battle->playerMoves[3].name, move4);
     battle->playerMoves[3].minDamage = 3;
     battle->playerMoves[3].maxDamage = 6;
     battle->playerMoves[3].usedMoves=2;
-    strcpy(battle->playerMoves[4].name, " DOMAIN EXPANSION: RAGEBAIT ");
+    strcpy(battle->playerMoves[4].name, "DOMAIN:RAGEBAIT NASIF");
     battle->playerMoves[4].minDamage = 25;
     battle->playerMoves[4].maxDamage = 60;
     battle->playerMoves[4].usedMoves=-1;

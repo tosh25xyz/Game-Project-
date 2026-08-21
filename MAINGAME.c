@@ -60,12 +60,14 @@ int main()
     MenuState menu;
     InitMenu(&menu);
     CharSelectState charSelect; /* <-- new */
+    const CharacterOption *chosen;
+    // CharacterMove *fought;
     InitCharSelect(&charSelect);
     LoadCharSelectAssets();
     // Difficulty d;
     //  int playerMaxHp = 100;
     //  int playerCurrentHp = 100;
-    InitPlayerStats(&playerstats, "NASIF");
+    //InitPlayerStats(&playerstats, "NASIF");
     while (!WindowShouldClose())
     {
 
@@ -98,8 +100,8 @@ int main()
             if (encounter && IsKeyPressed(KEY_SPACE))
             {
                 InitBattleScene(&battle,
-                                "NASIF", "Assets&resources/gojo-nasif.png", 4, 3,
-                                "ZARIF", "Assets&resources/geto-nasif.png", 4, 3);
+                                chosen->name, chosen->fight, 4, 3,
+                                "zarif chutpaglU", "Assets&resources/geto-nasif.png", 4, 3,chosen->move1,chosen->move2,chosen->move3,chosen->move4);
                 battle.player.maxHp = playerstats.maxHp;
                 battle.player.currentHp = playerstats.currentHp;
                 battle.player.displayedHp = playerstats.currentHp;
@@ -139,13 +141,13 @@ int main()
                 break;
             }
         }
-        else if (mode == MODE_CHARACTER_SELECT) /* <-- new block */
+        else if (mode == MODE_CHARACTER_SELECT) 
         {
             UpdateDrawCharSelect(&charSelect, screenWidth, screenHeight);
 
             if (charSelect.confirmed)
             {
-                 const CharacterOption *chosen = GetCharacterOption(charSelect.selectedIndex);
+                 chosen = GetCharacterOption(charSelect.selectedIndex);
                 UnloadTexture(texture);
                 texture = LoadTexture(chosen->movement);
                 frameWidth = texture.width / 4;

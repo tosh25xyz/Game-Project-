@@ -77,10 +77,11 @@ typedef struct BattleScene {
     bool won;
 } BattleScene;
 
-void InitBattleScene(BattleScene *battle, const char *playerName, 
-                    const char *playerSpritePath,int playerFrameCols,
-                    int PlayerFrameRows,const char *enemyName,
-                    const char *enemySpritePath,int enemyFrameCols,int enemyFrameRows);
+void InitBattleScene(BattleScene *battle,
+                      const char *playerName, const char *playerSpritePath,
+                      int playerFrameCols, int playerFrameRows,
+                      const char *enemyName, const char *enemySpritePath,
+                      int enemyFrameCols, int enemyFrameRows,const char *move1,const char *move2,const char *move3,const char *move4);
 void UnloadBattleScene(BattleScene *battle);
 
 void UpdateBattleScene(BattleScene *battle, float dt);
