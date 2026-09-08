@@ -32,6 +32,7 @@ int main()
     UnloadImage(icon);
     SetTargetFPS(60);
     srand((unsigned int)time(NULL));
+    const CharacterOption *chosen;
     // Load texture
     Texture2D texture = LoadTexture("Assets&resources/gojo_matched_size.png");
     // texture = LoadTexture("Assets&resources/player.png");
@@ -41,6 +42,8 @@ int main()
     int frameWidth = texture.width / 4;
     int frameHeight = texture.height / 4;
 
+    //   int frameWidth ;
+    // int frameHeight ;
     Rectangle frameRec = {0, 0, frameWidth, frameHeight};
     Vector2 position = {700, 400};
 
@@ -60,7 +63,7 @@ int main()
     MenuState menu;
     InitMenu(&menu);
     CharSelectState charSelect; /* <-- new */
-    const CharacterOption *chosen;
+    
     // CharacterMove *fought;
     InitCharSelect(&charSelect);
     LoadCharSelectAssets();
@@ -99,9 +102,10 @@ int main()
             UpdateFrame(&frameRec, &currentFrame, &currentRow, frameWidth, frameHeight);
             if (encounter && IsKeyPressed(KEY_SPACE))
             {
+                const EnemyTemplate *randomEnemy=PickRandomEnemyTemplate();
                 InitBattleScene(&battle,
                                 chosen->name, chosen->fight, 4, 3,
-                                "zarif chutpaglU", "Assets&resources/geto-nasif.png", 4, 3,chosen->move1,chosen->move2,chosen->move3,chosen->move4);
+                                randomEnemy,chosen->move1,chosen->move2,chosen->move3,chosen->move4);
                 battle.player.maxHp = playerstats.maxHp;
                 battle.player.currentHp = playerstats.currentHp;
                 battle.player.displayedHp = playerstats.currentHp;
@@ -148,8 +152,8 @@ int main()
             if (charSelect.confirmed)
             {
                  chosen = GetCharacterOption(charSelect.selectedIndex);
-                UnloadTexture(texture);
-                texture = LoadTexture(chosen->movement);
+                //UnloadTexture(texture);
+                Texture2D texture = LoadTexture(chosen->movement);
                 frameWidth = texture.width / 4;
                 frameHeight = texture.height / 4;
                 frameRec = (Rectangle){0, 0, frameWidth, frameHeight};

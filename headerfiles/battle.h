@@ -36,6 +36,18 @@ typedef struct Move {
     int maxDamage;
     int usedMoves;
 } Move;
+#define MAX_ENEMY_MOVES 4
+typedef struct EnemyTemplate {
+    char name[MAX_NAME_LEN];
+    char spritePath[128];
+    int frameCols;
+    int frameRows;
+    int maxHp;
+    Move moves[MAX_ENEMY_MOVES];
+    int moveCount;
+} EnemyTemplate;
+
+const EnemyTemplate *PickRandomEnemyTemplate(void);
 
 typedef enum BattleState {
     BATTLE_INTRO,
@@ -80,8 +92,7 @@ typedef struct BattleScene {
 void InitBattleScene(BattleScene *battle,
                       const char *playerName, const char *playerSpritePath,
                       int playerFrameCols, int playerFrameRows,
-                      const char *enemyName, const char *enemySpritePath,
-                      int enemyFrameCols, int enemyFrameRows,const char *move1,const char *move2,const char *move3,const char *move4);
+                      const EnemyTemplate *enemyTemplate,const char *move1,const char *move2,const char *move3,const char *move4);
 void UnloadBattleScene(BattleScene *battle);
 
 void UpdateBattleScene(BattleScene *battle, float dt);

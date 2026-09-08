@@ -80,12 +80,53 @@ static void InitCharacterSprite(Character *c, const char *spritePath, int frameC
     c->frameRec = (Rectangle){ 0, 0, (float)c->frameWidth, (float)c->frameHeight };
     SetCharacterAnim(c, ANIME_ROW_IDLE, frameCols, IDLE_FRAME_SPEED);
 }
+static const EnemyTemplate enemyPool[] = {
+    {
+        "zarif chutpaglU", "Assets&resources/geto-nasif.png", 4, 3, 100,
+        {
+            { " MINOR Bite ", 8, 9, -1 },
+            { " MINOR TERRITORY ", 20, 40, -1 },
+            { "MINOR Growl Slam", 14, 25, -1 },
+            { "ONLY MINOR SLASH", 16, 17, -1 },
+        },
+        4
+    },
+    {
+        "Cursed Womb", "Assets&resources/jogo.png", 4, 3, 80,
+        {
+            { "Flesh Lash", 6, 14, -1 },
+            { "Curse Pulse", 10, 22, -1 },
+            { "Grasping Claw", 12, 18, -1 },
+            { "Shriek", 5, 10, -1 },
+        },
+        4
+    },
+    {
+        "Finger Bearer", "Assets&resources/uchiha.png", 4, 3, 120,
+        {
+            { "Blunt Charge", 12, 20, -1 },
+            { "Bone Crush", 18, 30, -1 },
+            { "Wild Swing", 8, 15, -1 },
+            { "Roar", 10, 12, -1 },
+        },
+        4
+    },
+};
+
+#define ENEMY_POOL_SIZE (sizeof(enemyPool) / sizeof(enemyPool[0]))
+
+const EnemyTemplate *PickRandomEnemyTemplate(void)
+{
+    int idx = rand() % ENEMY_POOL_SIZE;
+    return &enemyPool[idx];
+}
+
+
 
 void InitBattleScene(BattleScene *battle,
                       const char *playerName, const char *playerSpritePath,
                       int playerFrameCols, int playerFrameRows,
-                      const char *enemyName, const char *enemySpritePath,
-                      int enemyFrameCols, int enemyFrameRows,const char *move1,const char *move2,const char *move3,const char *move4)
+                      const EnemyTemplate *enemyTemplate,const char *move1,const char *move2,const char *move3,const char *move4)
 {
     strncpy(battle->player.name, playerName, MAX_NAME_LEN - 1);
     battle->player.name[MAX_NAME_LEN - 1] = '\0';
@@ -99,7 +140,7 @@ void InitBattleScene(BattleScene *battle,
     battle->player.flashTimer = 0.0f;
     InitCharacterSprite(&battle->player, playerSpritePath, playerFrameCols, playerFrameRows, false);
 
-    strncpy(battle->enemy.name, enemyName, MAX_NAME_LEN - 1);
+    strncpy(battle->enemy.name, enemyTemplate->name , MAX_NAME_LEN - 1);
     battle->enemy.name[MAX_NAME_LEN - 1] = '\0';
     battle->enemy.maxHp = 100;
     battle->enemy.currentHp = 100;
@@ -109,7 +150,7 @@ void InitBattleScene(BattleScene *battle,
     battle->enemy.pos = battle->enemy.basePos;
     battle->enemy.tint = WHITE;
     battle->enemy.flashTimer = 0.0f;
-    InitCharacterSprite(&battle->enemy, enemySpritePath, enemyFrameCols, enemyFrameRows, true);
+    InitCharacterSprite(&battle->enemy, enemyTemplate->spritePath, enemyTemplate->frameCols, enemyTemplate->frameRows, true);
     strcpy(battle->playerMoves[0].name, move1);
     battle->playerMoves[0].minDamage = 5;
     battle->playerMoves[0].maxDamage = 15;
@@ -134,23 +175,29 @@ void InitBattleScene(BattleScene *battle,
     battle->moveCount = 5;
     battle->selectedMoveIndex = 0;
 
-    strcpy(battle->enemyMoves[0].name, " MINOR Bite ");
-    battle->enemyMoves[0].minDamage = 8;
-    battle->enemyMoves[0].maxDamage = 9;
+    // strcpy(battle->enemyMoves[0].name, " MINOR Bite ");
+    // battle->enemyMoves[0].minDamage = 8;
+    // battle->enemyMoves[0].maxDamage = 9;
 
-    strcpy(battle->enemyMoves[1].name, " MINOR TERRITORY ");
-    battle->enemyMoves[1].minDamage = 20;
-    battle->enemyMoves[1].maxDamage = 40;
+    // strcpy(battle->enemyMoves[1].name, " MINOR TERRITORY ");
+    // battle->enemyMoves[1].minDamage = 20;
+    // battle->enemyMoves[1].maxDamage = 40;
 
-    strcpy(battle->enemyMoves[2].name, "MINOR Growl Slam");
-    battle->enemyMoves[2].minDamage = 14;
-    battle->enemyMoves[2].maxDamage = 25;
+    // strcpy(battle->enemyMoves[2].name, "MINOR Growl Slam");
+    // battle->enemyMoves[2].minDamage = 14;
+    // battle->enemyMoves[2].maxDamage = 25;
 
-    strcpy(battle->enemyMoves[3].name, "ONLY MINOR SLASH");
-    battle->enemyMoves[3].minDamage = 16;
-    battle->enemyMoves[3].maxDamage = 17;
+    // strcpy(battle->enemyMoves[3].name, "ONLY MINOR SLASH");
+    // battle->enemyMoves[3].minDamage = 16;
+    // battle->enemyMoves[3].maxDamage = 17;
 
-    battle->enemyMoveCount = 4;
+    // battle->enemyMoveCount = 4;
+    for(int i=0;i<enemyTemplate->moveCount;i++)
+    {
+        battle->enemyMoves[i]=enemyTemplate->moves[i];
+
+    }
+    battle->enemyMoveCount=enemyTemplate->moveCount;
 
     battle->pendingMove = NULL;
     battle->pendingDamage = 0;
