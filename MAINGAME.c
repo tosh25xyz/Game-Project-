@@ -42,8 +42,6 @@ int main()
     int frameWidth = texture.width / 4;
     int frameHeight = texture.height / 4;
 
-    //   int frameWidth ;
-    // int frameHeight ;
     Rectangle frameRec = {0, 0, frameWidth, frameHeight};
     Vector2 position = {700, 400};
 
@@ -152,7 +150,7 @@ int main()
             if (charSelect.confirmed)
             {
                  chosen = GetCharacterOption(charSelect.selectedIndex);
-                //UnloadTexture(texture);
+                UnloadTexture(texture);
                 Texture2D texture = LoadTexture(chosen->movement);
                 frameWidth = texture.width / 4;
                 frameHeight = texture.height / 4;
