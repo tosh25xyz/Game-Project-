@@ -98,7 +98,7 @@ int main() {
     
     // Load map
     GameData game = {0};
-    game.map = LoadTileMap("assets/mymap.tmj");
+    game.map = LoadTileMap("assets/NEWMAP.tmj");
     
     // Calculate scale so the entire map fits on the screen
     float mapPixelWidth = game.map->width * TILE_SIZE;
@@ -129,7 +129,7 @@ int main() {
     // Find collision layer
     game.collisionLayerIndex = -1;
     for (int i = 0; i < game.map->layerCount; i++) {
-        if (strcmp(game.map->layers[i].name, "collision layer") == 0) {
+        if (strcmp(game.map->layers[i].name, "collision Layer") == 0) {
             game.collisionLayerIndex = i;
             break;
         }
