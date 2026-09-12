@@ -38,5 +38,5 @@ void UpdateDrawCharSelect(CharSelectState *cs, int screenW, int screenH);
 
 int GetCharacterCount(void);
 const CharacterOption *GetCharacterOption(int index);
-
+void ClampPositionToMap(Vector2 *position, float size, float mapPixelWidth, float mapPixelHeight);
 #endif

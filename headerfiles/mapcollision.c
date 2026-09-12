@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include "stdio.h"
 #include "mapcollision.h"
+#include"tiled.h"
 
 static int GetTileAtMapPos(TileMap *map, int layer, int x, int y) {
     if (x < 0 || x >= map->width || y < 0 || y >= map->height) {
@@ -16,6 +17,26 @@ static int GetTileAtMapPos(TileMap *map, int layer, int x, int y) {
     }
     return 0;
 }
+int CollisionLayer(TileMap *map)
+{
+    for (int i = 0; i < map->layerCount; i++) {
+        if (strcmp(map->layers[i].name, "collision Layer") == 0) {
+            return i;
+        
+        }
+    }
+    return -1;
+}
+int EncounterLayer(TileMap *map,const char *layername)
+{
+    
+    for (int i = 0; i < map->layerCount; i++) {
+        if (strcmp(map->layers[i].name, layername) == 0) {
+            return i;
+        }
+    }
+   return -1;
+}
 
 
 
@@ -27,6 +48,27 @@ static int GetTileAtMapPos(TileMap *map, int layer, int x, int y) {
 // the region" - that's the whole zone, not a single point.
 static bool IsInEncounterZone(TileMap *map, int encounterLayer, int tileX, int tileY) {
     return GetTileAtMapPos(map, encounterLayer, tileX, tileY) != 0;
+}
+void UpdateEncounterCheck(int curTileX,int curTileY, TileMap *map, int encounterLayerIndex,int *lastTileX, int *lastTileY,char *spawnMessage, bool *encounter) {
+
+
+    if (curTileX != *lastTileX || curTileY != *lastTileY) {
+        *lastTileX = curTileX;
+        *lastTileY = curTileY;
+
+        if (encounterLayerIndex != -1 &&
+            IsInEncounterZone(map, encounterLayerIndex, curTileX, curTileY)) {
+
+            if (GetRandomValue(1, 100) <= ENCOUNTER_CHANCE) {
+                strcpy(spawnMessage, "A random Beast Appeared!");
+                *encounter = true;
+            }
+        }
+    }
+
+    // if (*encounter && IsKeyPressed(KEY_SPACE)) {
+    //     *encounter = false;
+    // }
 }
 
 static bool CheckCollision(TileMap *map, int collisionLayer, float x, float y, float size) {
@@ -48,19 +90,22 @@ static bool CheckCollision(TileMap *map, int collisionLayer, float x, float y, f
 
     return false;
 }
-// void collisionfunc(Vector2 *nextPos,Vector2 *position,int frameWidth,int frameHeight,int tilesize)
-// {
-//     float scale = 3.0f;
-//     float playerWidth = frameWidth / scale;
-//     float playerHeight = frameHeight / scale;
-//     int leftTile   = nextPos->x / (tilesize);
-//     int rightTile  = (nextPos->x + playerWidth - 1) / (tilesize);
-//     int topTile    = nextPos->y / (tilesize);
-//     int bottomTile = (nextPos->y + playerHeight - 1) / (tilesize);
-//     if (!IsBlocked(leftTile, topTile) &&
-//     !IsBlocked(rightTile, topTile) &&
-//     !IsBlocked(leftTile, bottomTile) &&
-//     !IsBlocked(rightTile, bottomTile))
-// {
-//     *position = *nextPos;
-// }
+void ResolveMovementCollision(TileMap *map, int collisionLayerIndex,
+                               Vector2 *position, Vector2 nextPos, float size) {
+
+    if (!CheckCollision(map, collisionLayerIndex, nextPos.x, position->y, size)) {
+        position->x = nextPos.x;
+    }
+    if (!CheckCollision(map, collisionLayerIndex, position->x, nextPos.y, size)) {
+        position->y = nextPos.y;
+    }
+}
+
+void Drawencounter(bool encounter,char spawnMessage[],int screenWidth)
+{
+    if (encounter) {
+            
+            int textWidth = MeasureText(spawnMessage, 24);
+            DrawText(spawnMessage, (screenWidth - textWidth) / 2, 150, 24, YELLOW);
+        }
+}

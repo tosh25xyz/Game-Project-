@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include "json_parser.h"
 
-#define TILE_SIZE 32
+
 
 // Name of the Tile Layer in Tiled that marks the region where random
 // enemy encounters can happen. Paint the whole region with any tile(s)
@@ -25,9 +25,12 @@ typedef struct {
 } GameData;
 
 static int GetTileAtMapPos(TileMap *map, int layer, int x, int y);
-// static void DrawTile(Texture2D tileset, int tileID, float screenX, float screenY);
-// static void DrawMapLayer(Texture2D tileset, TileMap *map, int layerIndex);
+int CollisionLayer(TileMap *map);
+int EncounterLayer(TileMap *map,const char* layername);
+void DrawLayer(TileMap *map,int collisionLayerIndex, int encounterLayerIndex,Texture2D tilset,float offsetX, float offsetY, float scale);
+void Drawencounter(bool encounter,char spawnMessage[],int screenWidth);
 static bool CheckCollision(TileMap *map, int collisionLayer, float x, float y, float size);
 static bool IsInEncounterZone(TileMap *map, int encounterLayer, int tileX, int tileY);
-
+void ResolveMovementCollision(TileMap *map, int collisionLayerIndex, Vector2 *position, Vector2 nextPos, float size);
+void UpdateEncounterCheck(int curTileX,int curTileY, TileMap *map, int encounterLayerIndex,int *lastTileX, int *lastTileY,char *spawnMessage, bool *encounter);
 #endif

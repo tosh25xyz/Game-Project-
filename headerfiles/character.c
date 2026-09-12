@@ -54,10 +54,11 @@ void charactermovement(Vector2 *nextPos, int *currentRow,int frameWidth,int fram
 }
 
 
-void clampcharacter(Vector2 *position, int frameWidth, int frameHeight)
-{
-    position->x = Clamp(position->x, 0, screenWidth - frameWidth + 50);
-    position->y = Clamp(position->y, 0, screenHeight - frameHeight + 90);
+void ClampPositionToMap(Vector2 *position, float size, float mapPixelWidth, float mapPixelHeight) {
+    if (position->x < 0) position->x = 0;
+    if (position->y < 0) position->y = 0;
+    if (position->x + size > mapPixelWidth)  position->x = mapPixelWidth  - size;
+    if (position->y + size > mapPixelHeight) position->y = mapPixelHeight - size;
 }
 void animation(float *frameTime, int *currentFrame, float frameSpeed)
 {
