@@ -12,9 +12,9 @@
 #include <stdlib.h>
 #include "headerfiles/gamemode.h"
 #include "headerfiles/playerstats.c"
+#include "headerfiles/bossbattle.c"
 #include "json_parser.h"
-// RANDOM ENCOUNTER FUNCTION
-//====================================================
+
 #define TILE_SIZE 32
 #define PLAYER_SIZE 24
 
@@ -43,7 +43,7 @@ int main()
     srand((unsigned int)time(NULL));
     const CharacterOption *chosen;
     // Load texture
-    Texture2D texture = LoadTexture("Assets&resources/gojo_matched_size.png");
+    Texture2D texture = LoadTexture("Assets&resources/gojo_matched_size.png"); //Default character;
    
     LoadMenuBackgroundVideo("Assets&resources/menu_bg.mp4", screenWidth, screenHeight, 24.0f);
 
@@ -82,8 +82,9 @@ int main()
     game.collisionLayerIndex = CollisionLayer(game.map);
     game.encounterLayerIndex = EncounterLayer(game.map, ENCOUNTER_LAYER_NAME);
     game.teleportLayerIndex = EncounterLayer(game.map, TELEPORT_LAYER_NAME);
-    game.exitLayerIndex = EncounterLayer(game.map, CAVE_EXIT_LAYER_NAME);
+    //game.exitLayerIndex = EncounterLayer(game.map, CAVE_EXIT_LAYER_NAME);
 
+    //MAP INFO
     printf("Map loaded: %dx%d tiles (%dx%d pixels)\n", game.map->width, game.map->height, game.map->width * TILE_SIZE, game.map->height * TILE_SIZE);
     printf("Layers: %d\n", game.map->layerCount);
     printf("Map Scale: %.2f, Offset: (%.1f, %.1f)\n", info.scale, info.offsetX, info.offsetY);
@@ -96,6 +97,7 @@ int main()
     int lastTileX = (int)(position.x / TILE_SIZE);
     int lastTileY = (int)(position.y / TILE_SIZE);
 
+    //CHECKING IF IN THE TELEPORT TILE
     bool wasOnTeleportTile = false;
     bool wasOnExitTile = false;
     // "A random Beast Appeared!" popup text + fade timer
@@ -104,6 +106,7 @@ int main()
 
     // InitTileRects(tileRects);
     BattleScene battle;
+    BossBattleScene finalBattle;
     GameMode mode = MODE_GAME_MENU;
 
     PlayerStats playerstats;
@@ -199,13 +202,13 @@ int main()
             UpdateEncounterBoss(curTileX, curTileY, game.map, game.encounterLayerIndex, &lastTileX, &lastTileY, spawnMessage, &encounter);
             if (encounter && IsKeyPressed(KEY_SPACE))
             {
-                const EnemyTemplate *randomEnemy = PickRandomEnemyTemplate();
-                InitBattleScene(&battle,
+                const BossEnemyTemplate *randomEnemy = PickRandomEnemyTemplateBOSS();
+                InitBattleSceneBoss(&finalBattle,
                                 chosen->name, chosen->fight, 4, 3,
                                 randomEnemy, chosen->move1, chosen->move2, chosen->move3, chosen->move4);
-                battle.player.maxHp = playerstats.maxHp;
-                battle.player.currentHp = playerstats.currentHp;
-                battle.player.displayedHp = playerstats.currentHp;
+                finalBattle.player.maxHp = playerstats.maxHp;
+                finalBattle.player.currentHp = playerstats.currentHp;
+                finalBattle.player.displayedHp = playerstats.currentHp;
                 mode = MODE_BATTLE2;
             }
             wasOnExitTile = onExitTile;
@@ -234,17 +237,17 @@ int main()
         }
         else if (mode == MODE_BATTLE2)
         {
-            if (!IsBattleOver(&battle))
+            if (!IsBattleOverBOSS(&finalBattle))
             {
-                UpdateBattleScene(&battle, dt);
+                UpdateBattleSceneBoss(&finalBattle, dt);
             }
             else
             {
-                playerstats.currentHp = battle.player.currentHp;
-                playerstats.maxHp = battle.player.maxHp;
-                if (battle.won)
+                playerstats.currentHp = finalBattle.player.currentHp;
+                playerstats.maxHp = finalBattle.player.maxHp;
+                if (finalBattle.won)
                 {
-                    GainExp(&playerstats, battle.rewardExp);
+                    GainExp(&playerstats, finalBattle.rewardExp);
                 }
                 encounter = false;
                 mode = MODE_CAVE;
@@ -308,7 +311,7 @@ int main()
         else if (mode == MODE_BATTLE2)
         {
 
-            DrawBattleScene(&battle);
+            DrawBattleSceneBoss(&finalBattle);
         }
 
         DrawFPS(10, 10);
@@ -319,6 +322,7 @@ int main()
     UnloadCharSelectAssets();
     UnloadMenuBackgroundVideo();
     UnloadBattleScene(&battle);
+    UnloadBattleSceneBoss(&finalBattle);
     UnloadTexture(texture);
     CloseWindow();
 

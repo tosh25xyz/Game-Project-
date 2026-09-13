@@ -33,7 +33,7 @@ void DrawPlayerHud(PlayerStats *stats,int x,int y)
 {
     char namelevel[64];
     snprintf(namelevel,sizeof(namelevel),"%s Lv:%d",stats->name,stats->level);
-    DrawText(namelevel,x,y,20,BLACK);
+    DrawText(namelevel,x,y,20,RAYWHITE);
     int BarWidth=220, BarHeight=18;
     //--------HP-BAR-----------------
     float hpPct=(float)stats->currentHp/(float)stats->maxHp;
@@ -66,6 +66,6 @@ void DrawPlayerHud(PlayerStats *stats,int x,int y)
     DrawRectangleLines(x,y+46,BarWidth,10,BLACK);
     char exptext[32];
     snprintf(exptext,sizeof(exptext),"EXP %d/%d",stats->currentExp,stats->expToNextLevel);
-    DrawText(exptext,x,y+58,12,BLACK);
+    DrawText(exptext,x,y+58,12,RAYWHITE);
 
 }
