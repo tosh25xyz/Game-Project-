@@ -1,0 +1,5 @@
+*.exe
+*.o
+
+# Local editor and debugger state
+.vscode/*.log
