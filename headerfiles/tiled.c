@@ -35,10 +35,11 @@ void DrawTileScaled(Texture2D tileset, int tileID, float screenX, float screenY,
         }
     }
 }
-void DrawLayer(TileMap *map,int collisionLayerIndex, int encounterLayerIndex,Texture2D tileset,float offsetX, float offsetY, float scale) {
+void DrawLayer(TileMap *map,int collisionLayerIndex, int encounterLayerIndex, int teleportLayerIndex, int exitLayerIndex, Texture2D tileset,float offsetX, float offsetY, float scale) {
 
     for (int i = 0; i < map->layerCount; i++) {
-        if (i != collisionLayerIndex && i != encounterLayerIndex) {
+        if (i != collisionLayerIndex && i != encounterLayerIndex &&
+            i != teleportLayerIndex && i != exitLayerIndex) {
             DrawMapLayerScaled(tileset, map, i, offsetX, offsetY, scale);
         }
     }
@@ -64,13 +65,13 @@ Mapport CalculateMapviewport(int mapWidth, int mapHeight, int tileSize,
 }
 void DrawDebugUI(Vector2 position, Vector2 nextPos, bool moving,
                   int mapWidth, int mapHeight, float scale,
-                  int collisionLayerIndex, int tileUnderPlayer) {
+                  int collisionLayerIndex) {
 
-    DrawText("Jujutsu Kaisen RPG Map", 10, 10, 20, WHITE);
-    DrawText(TextFormat("Player: (%.0f, %.0f)", position.x, position.y), 10, 35, 16, WHITE);
-    DrawText(TextFormat("Tile: (%d, %d)", (int)(position.x/TILE_SIZE), (int)(position.y/TILE_SIZE)), 10, 55, 16, WHITE);
-    DrawText("Controls: WASD/Arrows to move, C to toggle collision view", 10, 75, 14, LIGHTGRAY);
-    DrawText(TextFormat("Map: %dx%d | Scale: %.2f", mapWidth, mapHeight, scale), 10, 95, 14, LIGHTGRAY);
-    DrawText(TextFormat("Moving: %s | NextPos: (%.1f, %.1f)", moving ? "YES" : "NO", nextPos.x, nextPos.y), 10, 115, 14, GREEN);
-    DrawText(TextFormat("CollisionLayerIdx: %d | TileID under player: %d", collisionLayerIndex, tileUnderPlayer), 10, 135, 14, ORANGE);
+    DrawText("Jujutsu Kaisen RPG Map", 10, 30, 20, WHITE);
+    DrawText(TextFormat("Player: (%.0f, %.0f)", position.x, position.y), 10, 55, 16, WHITE);
+    DrawText(TextFormat("Tile: (%d, %d)", (int)(position.x/TILE_SIZE), (int)(position.y/TILE_SIZE)), 10, 75, 16, WHITE);
+    DrawText("Controls: WASD/Arrows to move, C to toggle collision view", 10, 95, 14, LIGHTGRAY);
+    DrawText(TextFormat("Map: %dx%d | Scale: %.2f", mapWidth, mapHeight, scale), 10, 115, 14, LIGHTGRAY);
+    DrawText(TextFormat("Moving: %s | NextPos: (%.1f, %.1f)", moving ? "YES" : "NO", nextPos.x, nextPos.y), 10, 135, 14, GREEN);
+    //DrawText(TextFormat("CollisionLayerIdx: %d | TileID under player: %d", collisionLayerIndex, tileUnderPlayer), 10, 135, 14, ORANGE);
 }

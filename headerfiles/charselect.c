@@ -8,10 +8,10 @@
    fine — doesn't need to be animated here).
    -------------------------------------------------------------- */
 static const CharacterOption roster[] = {
-    { "GOJO SATORU",     "Assets&resources/gojo.png", "The Strongest" ,"Assets&resources/gojo_matched_size.png","Assets&resources/gojo-nasif.png","gay","sex","with","me"},
-    { "SUKUNA",          "Assets&resources/sukuna.png",    "King of Curses",  "Assets&resources/king.png","Assets&resources/sukunafight.png","ara ara","dosta dosta","women","hehe"},
-    { "MEGUMI FUSHIGURO","Assets&resources/megumi.png",    "Ten Shadows User","Assets&resources/megumi2.png","Assets&resources/megumifight.png","choda holo","kake?","kivabe?","keno?" },
-    { "ITADORI YUJI", "Assets&resources/itadori.png",    "RAW STRENGTH","Assets&resources/yuji3.png","Assets&resources/yujifight.png","dld","dm","math","tushar" },
+    { "GOJO SATORU",     "Assets&resources/gojo.png", "The Strongest" ,"Assets&resources/gojo_matched_size.png","Assets&resources/gojo-nasif.png","Refer_EXAM","16-17","HALF GLASSKERU","PEDO"},
+    { "SUKUNA",          "Assets&resources/sukuna.png",    "King of Curses",  "Assets&resources/king.png","Assets&resources/sukunafight.png","YAMETEEEE","dosta dosta","KUDASAII","ATTENDANCE"},
+    { "MEGUMI FUSHIGURO","Assets&resources/megumi.png",    "Ten Shadows User","Assets&resources/megumi2.png","Assets&resources/megumifight.png","O KEEE?","kake?","kivabe?","keno?" },
+    { "ITADORI YUJI", "Assets&resources/itadori.png",    "RAW STRENGTH","Assets&resources/yuji3.png","Assets&resources/yujifight.png","EW BTM","KAMLA CIVIL","RED HELL","WIN CSE" },
 };
 // static const CharacterMove fighter[] = {
 //     { "Blue Eyes",     "Purple Fragment", "Blue and Red" ,"DOMAIN:VOID","funky dance"},

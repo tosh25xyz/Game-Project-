@@ -82,7 +82,7 @@ static void InitCharacterSprite(Character *c, const char *spritePath, int frameC
 }
 static const EnemyTemplate enemyPool[] = {
     {
-        "zarif chutpaglU", "Assets&resources/geto-nasif.png", 4, 3, 100,
+        "zarif PEDOPHILIA", "Assets&resources/geto-nasif.png", 4, 3, 100,
         {
             { " MINOR Bite ", 8, 9, -1 },
             { " MINOR TERRITORY ", 20, 40, -1 },
@@ -92,7 +92,7 @@ static const EnemyTemplate enemyPool[] = {
         4
     },
     {
-        "Cursed Womb", "Assets&resources/jogo.png", 4, 3, 80,
+        "MOLLAH", "Assets&resources/jogo.png", 4, 3, 80,
         {
             { "Flesh Lash", 6, 14, -1 },
             { "Curse Pulse", 10, 22, -1 },
@@ -102,7 +102,7 @@ static const EnemyTemplate enemyPool[] = {
         4
     },
     {
-        "Finger Bearer", "Assets&resources/uchiha.png", 4, 3, 120,
+        "JIBON NAHAR", "Assets&resources/uchiha.png", 4, 3, 120,
         {
             { "Blunt Charge", 12, 20, -1 },
             { "Bone Crush", 18, 30, -1 },
@@ -123,10 +123,7 @@ const EnemyTemplate *PickRandomEnemyTemplate(void)
 
 
 
-void InitBattleScene(BattleScene *battle,
-                      const char *playerName, const char *playerSpritePath,
-                      int playerFrameCols, int playerFrameRows,
-                      const EnemyTemplate *enemyTemplate,const char *move1,const char *move2,const char *move3,const char *move4)
+void InitBattleScene(BattleScene *battle,const char *playerName, const char *playerSpritePath,int playerFrameCols, int playerFrameRows,const EnemyTemplate *enemyTemplate,const char *move1,const char *move2,const char *move3,const char *move4)
 {
     strncpy(battle->player.name, playerName, MAX_NAME_LEN - 1);
     battle->player.name[MAX_NAME_LEN - 1] = '\0';

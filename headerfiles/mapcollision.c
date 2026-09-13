@@ -66,6 +66,27 @@ void UpdateEncounterCheck(int curTileX,int curTileY, TileMap *map, int encounter
         }
     }
 
+    if (*encounter && IsKeyPressed(KEY_ENTER)) {
+        *encounter = false;
+    }
+}
+void UpdateEncounterBoss(int curTileX,int curTileY, TileMap *map, int encounterLayerIndex,int *lastTileX, int *lastTileY,char *spawnZARIF, bool *encounter) {
+
+
+    if (curTileX != *lastTileX || curTileY != *lastTileY) {
+        *lastTileX = curTileX;
+        *lastTileY = curTileY;
+
+        if (encounterLayerIndex != -1 &&
+            IsInEncounterZone(map, encounterLayerIndex, curTileX, curTileY)) {
+
+            if (GetRandomValue(1, 100) <= ENCOUNTER_CHANCE) {
+                strcpy(spawnZARIF, "Mysterious ENEMY APPEARED");
+                *encounter = true;
+            }
+        }
+    }
+
     // if (*encounter && IsKeyPressed(KEY_SPACE)) {
     //     *encounter = false;
     // }
@@ -108,4 +129,27 @@ void Drawencounter(bool encounter,char spawnMessage[],int screenWidth)
             int textWidth = MeasureText(spawnMessage, 24);
             DrawText(spawnMessage, (screenWidth - textWidth) / 2, 150, 24, YELLOW);
         }
+}
+
+static Mapport SwitchMap(GameData *game, const char *mapPath, const char *tilesetPath,
+                          int screenWidth, int screenHeight) {
+    UnloadTexture(game->tileset);
+    UnloadTileMap(game->map);
+
+    game->map = LoadTileMap(mapPath);
+    if (!game->map) {
+        printf("Failed to load map: %s\n", mapPath);
+        CloseWindow();
+        exit(1);
+    }
+    game->tileset = LoadTexture(tilesetPath);
+
+    game->collisionLayerIndex = CollisionLayer(game->map);
+    game->encounterLayerIndex = EncounterLayer(game->map, ENCOUNTER_LAYER_NAME);
+    game->teleportLayerIndex  = EncounterLayer(game->map, TELEPORT_LAYER_NAME);
+    game->exitLayerIndex      = EncounterLayer(game->map, CAVE_EXIT_LAYER_NAME);
+
+    printf("Map loaded: %s (%dx%d tiles)\n", mapPath, game->map->width, game->map->height);
+
+    return CalculateMapviewport(game->map->width, game->map->height, TILE_SIZE, screenWidth, screenHeight);
 }
