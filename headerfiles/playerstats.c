@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #define BASE_EXP_TO_LEVEL 100
-#define baseexp 0;
+#define EXP_GROWTH_PER_LEVEL 50
 #define HP_GAIN_PER_LEVEL 10
 
 void InitPlayerStats(PlayerStats *stats,const char *name)
@@ -18,15 +18,14 @@ void InitPlayerStats(PlayerStats *stats,const char *name)
 }
 void GainExp(PlayerStats *stats,int amount)
 {
-    stats->currentExp+=amount;
-    //WE use while loop cuz Level Might Increase Based on EXP eARNED 
-    while(stats->currentExp>=stats->expToNextLevel)
+   stats->currentExp += amount;
+    while (stats->currentExp >= stats->expToNextLevel)
     {
-        stats->currentExp -=stats->expToNextLevel;
+        stats->currentExp -= stats->expToNextLevel;
         stats->level++;
-        stats->maxHp+=HP_GAIN_PER_LEVEL;
-        stats->currentHp=stats->maxHp;
-        stats->expToNextLevel=stats->level*baseexp;
+        stats->maxHp += HP_GAIN_PER_LEVEL;
+        stats->currentHp = stats->maxHp;
+        stats->expToNextLevel = BASE_EXP_TO_LEVEL + (stats->level - 1) * EXP_GROWTH_PER_LEVEL;
     }
 }
 void DrawPlayerHud(PlayerStats *stats,int x,int y)
@@ -56,7 +55,7 @@ void DrawPlayerHud(PlayerStats *stats,int x,int y)
 
 
     //-----EXP-BAR-----------------
-    float expPct=(float)stats->currentHp/(float)stats->expToNextLevel;
+    float expPct=(float)stats->currentExp/(float)stats->expToNextLevel;
     if(expPct<0)
     {
         expPct=0;

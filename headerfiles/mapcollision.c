@@ -147,6 +147,7 @@ static Mapport SwitchMap(GameData *game, const char *mapPath, const char *tilese
     game->collisionLayerIndex = CollisionLayer(game->map);
     game->encounterLayerIndex = EncounterLayer(game->map, ENCOUNTER_LAYER_NAME);
     game->teleportLayerIndex  = EncounterLayer(game->map, TELEPORT_LAYER_NAME);
+    game->healLayerIndex=EncounterLayer(game->map,HEAL_POINT);
     game->exitLayerIndex      = EncounterLayer(game->map, CAVE_EXIT_LAYER_NAME);
 
     printf("Map loaded: %s (%dx%d tiles)\n", mapPath, game->map->width, game->map->height);

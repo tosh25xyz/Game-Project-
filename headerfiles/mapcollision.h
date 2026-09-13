@@ -25,16 +25,17 @@
 // that leads back OUT to the overworld. Same idea as TELEPORT_LAYER_NAME,
 // just the reverse direction.
 #define CAVE_EXIT_LAYER_NAME "exit"
-
+#define HEAL_POINT "heal"
 typedef struct {
     Texture2D tileset;
     TileMap *map;
     int collisionLayerIndex;
     int encounterLayerIndex;
     int teleportLayerIndex;   // "inside" layer - present on the overworld map
-    int exitLayerIndex;       // "exit" layer - present on the cave map
+    int exitLayerIndex;
+    int healLayerIndex;       // "exit" layer - present on the cave map
 } GameData;
-
+static Mapport SwitchMap(GameData *game, const char *mapPath, const char *tilesetPath,int screenWidth, int screenHeight);
 static int GetTileAtMapPos(TileMap *map, int layer, int x, int y);
 int CollisionLayer(TileMap *map);
 int EncounterLayer(TileMap *map,const char* layername);

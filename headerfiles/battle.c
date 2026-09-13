@@ -172,21 +172,7 @@ void InitBattleScene(BattleScene *battle,const char *playerName, const char *pla
     battle->moveCount = 5;
     battle->selectedMoveIndex = 0;
 
-    // strcpy(battle->enemyMoves[0].name, " MINOR Bite ");
-    // battle->enemyMoves[0].minDamage = 8;
-    // battle->enemyMoves[0].maxDamage = 9;
-
-    // strcpy(battle->enemyMoves[1].name, " MINOR TERRITORY ");
-    // battle->enemyMoves[1].minDamage = 20;
-    // battle->enemyMoves[1].maxDamage = 40;
-
-    // strcpy(battle->enemyMoves[2].name, "MINOR Growl Slam");
-    // battle->enemyMoves[2].minDamage = 14;
-    // battle->enemyMoves[2].maxDamage = 25;
-
-    // strcpy(battle->enemyMoves[3].name, "ONLY MINOR SLASH");
-    // battle->enemyMoves[3].minDamage = 16;
-    // battle->enemyMoves[3].maxDamage = 17;
+   
 
     // battle->enemyMoveCount = 4;
     for(int i=0;i<enemyTemplate->moveCount;i++)
@@ -531,21 +517,7 @@ Vector2 origin={0,0};
             char line[64];
             snprintf(line, sizeof(line), "%d  %s", i + 1, battle->playerMoves[i].name);
             Color col;
-            // if(i==4)
-            // {
-            //     if(battle->enemy.currentHp<=50)
-            //     {
-            //         col=WHITE;
-            //     }
-            //     else
-            //     {
-            //         col=RED;
-            //     }
-            // }
-            // else if(battle->playerMoves[i].usedMoves==0)
-            // {
-            //     col=RED;
-            // }
+           
 
             if(i==battle->selectedMoveIndex)
             {

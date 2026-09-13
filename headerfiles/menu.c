@@ -137,7 +137,7 @@ void UpdateDrawMenu(MenuState *menu, int screenW, int screenH)
     DrawMenuBackdrop(screenW, screenH);
  
     /* Title */
-    const char *title = "SUKUNA'S DOMAIN";   /* swap for your game's title */
+    const char *title = "CURSED CREW:: CULLING GAME";   /* swap for your game's title */
     int titleSize = 46;
     int titleW = MeasureText(title, titleSize);
     DrawText(title, screenW / 2 - titleW / 2, screenH / 2 - 170, titleSize, WHITE);

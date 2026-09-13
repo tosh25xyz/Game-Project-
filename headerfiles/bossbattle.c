@@ -112,7 +112,7 @@ void InitBattleSceneBoss(BossBattleScene *battle,const char *playerName, const c
     battle->player.currentHp = 100;
     battle->player.displayedHp = 100;
     
-    battle->player.basePos = (Vector2){270, 500 };
+    battle->player.basePos = (Vector2){270, 340 };
     battle->player.pos = battle->player.basePos;
     battle->player.tint = WHITE;
     battle->player.flashTimer = 0.0f;
@@ -124,7 +124,7 @@ void InitBattleSceneBoss(BossBattleScene *battle,const char *playerName, const c
     battle->enemy.currentHp = 100;
     battle->enemy.displayedHp = 100;
    
-    battle->enemy.basePos = (Vector2){ 1050, 510 };
+    battle->enemy.basePos = (Vector2){ 1050, 350 };
     battle->enemy.pos = battle->enemy.basePos;
     battle->enemy.tint = WHITE;
     battle->enemy.flashTimer = 0.0f;
@@ -171,7 +171,7 @@ void InitBattleSceneBoss(BossBattleScene *battle,const char *playerName, const c
     battle->rewardExp = 0;
     battle->rewardCoins = 0;
     battle->won=false;
-    battle->background = LoadTexture("Assets&resources/battle2.png");
+    battle->background = LoadTexture("Assets&resources/battlecave.png");
 }
 
 void UnloadBattleSceneBoss(BossBattleScene *battle)

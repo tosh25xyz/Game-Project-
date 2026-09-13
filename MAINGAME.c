@@ -29,13 +29,16 @@
 #define CAVE_SPAWN_TILE_Y 6
 #define OVERWORLD_SPAWN_TILE_X 11
 #define OVERWORLD_SPAWN_TILE_Y 7
-
+// HEALING FUNDAMENTALS
+#define HEAL_AMOUNT 50
+#define HEAL_HP_THRESHOLD 50
+#define MAX_PLAYER_HP 100
 int main()
 {
 
     int screenWidth = 1500;
     int screenHeight = 900;
-    InitWindow(screenWidth, screenHeight, "Jujutsu Kaisen - raylib (C)");
+    InitWindow(screenWidth, screenHeight, " HALF GLASS KAREW");
     Image icon = LoadImage("Assets&resources/jjk2.png");
     SetWindowIcon(icon);
     UnloadImage(icon);
@@ -43,8 +46,8 @@ int main()
     srand((unsigned int)time(NULL));
     const CharacterOption *chosen;
     // Load texture
-    Texture2D texture = LoadTexture("Assets&resources/gojo_matched_size.png"); //Default character;
-   
+    Texture2D texture = LoadTexture("Assets&resources/gojo_matched_size.png"); // Default character;
+
     LoadMenuBackgroundVideo("Assets&resources/menu_bg.mp4", screenWidth, screenHeight, 24.0f);
 
     int frameWidth = texture.width / 4;
@@ -82,25 +85,20 @@ int main()
     game.collisionLayerIndex = CollisionLayer(game.map);
     game.encounterLayerIndex = EncounterLayer(game.map, ENCOUNTER_LAYER_NAME);
     game.teleportLayerIndex = EncounterLayer(game.map, TELEPORT_LAYER_NAME);
-    //game.exitLayerIndex = EncounterLayer(game.map, CAVE_EXIT_LAYER_NAME);
+    game.healLayerIndex = EncounterLayer(game.map, HEAL_POINT);
+    // game.exitLayerIndex = EncounterLayer(game.map, CAVE_EXIT_LAYER_NAME);
 
-    //MAP INFO
-    printf("Map loaded: %dx%d tiles (%dx%d pixels)\n", game.map->width, game.map->height, game.map->width * TILE_SIZE, game.map->height * TILE_SIZE);
-    printf("Layers: %d\n", game.map->layerCount);
-    printf("Map Scale: %.2f, Offset: (%.1f, %.1f)\n", info.scale, info.offsetX, info.offsetY);
-    for (int i = 0; i < game.map->layerCount; i++)
-    {
-        printf("  Layer %d: %s\n", i, game.map->layers[i].name);
-    }
     // Tracks the player's last tile so the encounter roll only fires
     // once per NEW tile entered - not every single frame.
     int lastTileX = (int)(position.x / TILE_SIZE);
     int lastTileY = (int)(position.y / TILE_SIZE);
 
-    //CHECKING IF IN THE TELEPORT TILE
+    // CHECKING IF IN THE TELEPORT TILE
     bool wasOnTeleportTile = false;
     bool wasOnExitTile = false;
-    // "A random Beast Appeared!" popup text + fade timer
+    bool wasOnHealPoint = false;
+    int losses = 0;
+    // "A random Beast Appeared!"
     char spawnMessage[64] = "";
     bool encounter = false;
 
@@ -164,9 +162,7 @@ int main()
             if (encounter && IsKeyPressed(KEY_SPACE))
             {
                 const EnemyTemplate *randomEnemy = PickRandomEnemyTemplate();
-                InitBattleScene(&battle,
-                                chosen->name, chosen->fight, 4, 3,
-                                randomEnemy, chosen->move1, chosen->move2, chosen->move3, chosen->move4);
+                InitBattleScene(&battle, chosen->name, chosen->fight, 4, 3, randomEnemy, chosen->move1, chosen->move2, chosen->move3, chosen->move4);
                 battle.player.maxHp = playerstats.maxHp;
                 battle.player.currentHp = playerstats.currentHp;
                 battle.player.displayedHp = playerstats.currentHp;
@@ -203,15 +199,25 @@ int main()
             if (encounter && IsKeyPressed(KEY_SPACE))
             {
                 const BossEnemyTemplate *randomEnemy = PickRandomEnemyTemplateBOSS();
-                InitBattleSceneBoss(&finalBattle,
-                                chosen->name, chosen->fight, 4, 3,
-                                randomEnemy, chosen->move1, chosen->move2, chosen->move3, chosen->move4);
+                InitBattleSceneBoss(&finalBattle, chosen->name, chosen->fight, 4, 3, randomEnemy, chosen->move1, chosen->move2, chosen->move3, chosen->move4);
                 finalBattle.player.maxHp = playerstats.maxHp;
                 finalBattle.player.currentHp = playerstats.currentHp;
                 finalBattle.player.displayedHp = playerstats.currentHp;
                 mode = MODE_BATTLE2;
             }
             wasOnExitTile = onExitTile;
+            bool onHealTile = (game.healLayerIndex != -1) &&
+                              (GetTileAtMapPos(game.map, game.healLayerIndex, curTileX, curTileY) != 0);
+
+            if (onHealTile && !wasOnHealPoint && playerstats.currentHp < HEAL_HP_THRESHOLD)
+            {
+                playerstats.currentHp += HEAL_AMOUNT;
+                if (playerstats.maxHp > MAX_PLAYER_HP)
+                {
+                    playerstats.currentHp = MAX_PLAYER_HP;
+                }
+            }
+            wasOnHealPoint = onHealTile;
         }
 
         // ---- Random encounter check (Pokemon-style tall grass) ----
@@ -230,9 +236,28 @@ int main()
                 if (battle.won)
                 {
                     GainExp(&playerstats, battle.rewardExp);
+                    mode = MODE_OVERWORLD;
                 }
+                else
+                {
+                    // Handled directly inside the battle-lose branch below
+                    losses++;
+                    if (losses >= 2)
+                    {
+                        // Second loss: game over, back to main menu
+                        InitMenu(&menu);
+                        mode = MODE_GAME_MENU;
+                    }
+                    else
+                    {
+                        // First loss: go back to the overworld with half health
+                        playerstats.currentHp = playerstats.maxHp / 2;
+
+                        mode = MODE_OVERWORLD;
+                    }
+                }
+                //UnloadBattleScene(&battle);
                 encounter = false;
-                mode = MODE_OVERWORLD;
             }
         }
         else if (mode == MODE_BATTLE2)
@@ -248,9 +273,27 @@ int main()
                 if (finalBattle.won)
                 {
                     GainExp(&playerstats, finalBattle.rewardExp);
+                    mode = MODE_CAVE;
                 }
+                else
+                {
+                    losses++;
+                    if (losses >= 2)
+                    {
+                        // Second loss: game over, back to main menu
+                        InitMenu(&menu);
+                        mode = MODE_GAME_MENU;
+                    }
+                    else
+                    {
+                        // First loss: back to the cave with half health
+                        playerstats.currentHp = playerstats.maxHp / 2;
+
+                        mode = MODE_CAVE;
+                    }
+                }
+                //UnloadBattleSceneBoss(&finalBattle);
                 encounter = false;
-                mode = MODE_CAVE;
             }
         }
 
@@ -276,7 +319,7 @@ int main()
             {
                 chosen = GetCharacterOption(charSelect.selectedIndex);
                 UnloadTexture(texture);
-                Texture2D texture = LoadTexture(chosen->movement);
+                texture = LoadTexture(chosen->movement);
                 frameWidth = texture.width / 4;
                 frameHeight = texture.height / 4;
                 frameRec = (Rectangle){0, 0, frameWidth, frameHeight};
@@ -292,14 +335,24 @@ int main()
             }
         }
 
-        else if (mode == MODE_OVERWORLD || mode == MODE_CAVE)
+        else if (mode == MODE_OVERWORLD)
         {
 
             // Character
             DrawLayer(game.map, game.collisionLayerIndex, game.encounterLayerIndex, game.teleportLayerIndex, game.exitLayerIndex, game.tileset, info.offsetX, info.offsetY, info.scale);
             DrawCharacter(texture, frameRec, position, frameWidth, frameHeight, info.scale, info.offsetX, info.offsetY);
             Drawencounter(encounter, spawnMessage, screenWidth);
-            DrawDebugUI(position, nextPos, moving,game.map->width, game.map->height, info.scale,game.collisionLayerIndex);
+            DrawDebugUI(position, nextPos, moving, game.map->width, game.map->height, info.scale, game.collisionLayerIndex);
+            DrawPlayerHud(&playerstats, 1140, 20);
+        }
+        else if (mode == MODE_CAVE)
+        {
+
+            // Character
+            DrawLayer(game.map, game.collisionLayerIndex, game.encounterLayerIndex, game.teleportLayerIndex, game.exitLayerIndex, game.tileset, info.offsetX, info.offsetY, info.scale);
+            DrawCharacter(texture, frameRec, position, frameWidth, frameHeight, info.scale, info.offsetX, info.offsetY);
+            Drawencounter(encounter, spawnMessage, screenWidth);
+            DrawDebugUI(position, nextPos, moving, game.map->width, game.map->height, info.scale, game.collisionLayerIndex);
             DrawPlayerHud(&playerstats, 1140, 20);
         }
 

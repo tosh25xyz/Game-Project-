@@ -25,7 +25,9 @@
 #define CAVE_SPAWN_TILE_Y      6
 #define OVERWORLD_SPAWN_TILE_X 11
 #define OVERWORLD_SPAWN_TILE_Y 7
-
+#define HEAL_AMOUNT        20
+#define HEAL_HP_THRESHOLD  101
+#define MAX_PLAYER_HP      150
 
 
 // Custom draw function with scaling
@@ -78,14 +80,15 @@ int main() {
     game.collisionLayerIndex = CollisionLayer(game.map);
     game.encounterLayerIndex = EncounterLayer(game.map, ENCOUNTER_LAYER_NAME);
     game.teleportLayerIndex  = EncounterLayer(game.map, TELEPORT_LAYER_NAME);
+    game.healLayerIndex=EncounterLayer(game.map,HEAL_POINT);
     game.exitLayerIndex      = EncounterLayer(game.map, CAVE_EXIT_LAYER_NAME); // -1 on the overworld map, that's fine
 
-    printf("Map loaded: %dx%d tiles (%dx%d pixels)\n",game.map->width, game.map->height,game.map->width * TILE_SIZE, game.map->height * TILE_SIZE);
-    printf("Layers: %d\n", game.map->layerCount);
-    printf("Map Scale: %.2f, Offset: (%.1f, %.1f)\n", info.scale, info.offsetX, info.offsetY);
-    for (int i = 0; i < game.map->layerCount; i++) {
-        printf("  Layer %d: %s\n", i, game.map->layers[i].name);
-    }
+    // printf("Map loaded: %dx%d tiles (%dx%d pixels)\n",game.map->width, game.map->height,game.map->width * TILE_SIZE, game.map->height * TILE_SIZE);
+    // printf("Layers: %d\n", game.map->layerCount);
+    // printf("Map Scale: %.2f, Offset: (%.1f, %.1f)\n", info.scale, info.offsetX, info.offsetY);
+    // for (int i = 0; i < game.map->layerCount; i++) {
+    //     printf("  Layer %d: %s\n", i, game.map->layers[i].name);
+    // }
 
     bool moving = false;
 
@@ -98,10 +101,10 @@ int main() {
     // tile only fires the map switch once, not every frame.
     bool wasOnTeleportTile = false;
     bool wasOnExitTile = false;
-
+    bool wasonHealPoint=false;
     // "A random Beast Appeared!" popup text + fade timer
     char spawnMessage[64] = "";
-    
+    int playerhp=100;
     //float spawnMessageTimer = 0.0f;
     bool encounter=false;
     // Main loop
@@ -145,13 +148,12 @@ int main() {
             wasOnTeleportTile = onTeleportTile;
         } else if (currentMap == MODE_CAVE) {
             // Falls back to a key press if you haven't added the "exit" layer to insideCave.tmj yet.
-            bool onExitTile = false;
-            if (game.exitLayerIndex != -1) {
-                onExitTile = GetTileAtMapPos(game.map, game.exitLayerIndex, curTileX, curTileY) != 0;
-            }
-            bool exitPressed = (game.exitLayerIndex == -1) && IsKeyPressed(KEY_BACKSPACE);
+            
+             bool  onExitTile = GetTileAtMapPos(game.map, game.exitLayerIndex, curTileX, curTileY) != 0;
+            
+            
 
-            if ((onExitTile && !wasOnExitTile) || exitPressed) {
+            if ((onExitTile && !wasOnExitTile)) {
                 info = SwitchMap(&game, OVERWORLD_MAP_PATH, OVERWORLD_TILESET, screenWidth, screenHeight);
                 
                 position = (Vector2){ 482,74 };
@@ -175,8 +177,17 @@ int main() {
         else if(currentMap==MODE_CAVE)
         {
             UpdateEncounterBoss(curTileX,curTileY, game.map, game.encounterLayerIndex,&lastTileX, &lastTileY, spawnMessage, &encounter);
+            bool onHealpoint=((game.healLayerIndex!=-1) && (GetTileAtMapPos(game.map, game.healLayerIndex, curTileX, curTileY) != 0));
+            if (onHealpoint && !wasonHealPoint && playerhp < HEAL_HP_THRESHOLD)
+                {
+                playerhp += HEAL_AMOUNT;
+                if (playerhp > MAX_PLAYER_HP) playerhp = MAX_PLAYER_HP;
+                }
+    
+            wasonHealPoint=onHealpoint;
         }
-        int tileUnderPlayer = GetTileAtMapPos(game.map, game.collisionLayerIndex, curTileX, curTileY);
+        //int tileUnderPlayer = GetTileAtMapPos(game.map, game.collisionLayerIndex, curTileX, curTileY);
+        // printf("PLAYERHP:%d",playerhp);
         // Render
         BeginDrawing();
         ClearBackground((Color){20, 20, 30, 255});
@@ -204,8 +215,9 @@ int main() {
         // "A random Beast Appeared!" message, fades out after SPAWN_MESSAGE_DURATION seconds
         Drawencounter(encounter,spawnMessage,screenWidth);
 
+        DrawText(TextFormat("Playerhp: (%d)", playerhp), 10, 155, 16, WHITE);
         // Draw UI
-        DrawDebugUI(position, nextPos, moving,game.map->width, game.map->height, info.scale,game.collisionLayerIndex, tileUnderPlayer);
+        DrawDebugUI(position, nextPos, moving,game.map->width, game.map->height, info.scale,game.collisionLayerIndex);
         EndDrawing();
     }
 
