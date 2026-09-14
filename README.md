@@ -102,6 +102,8 @@ No game engine, no visual scripting — just raylib, a hand-rolled Tiled `.tmj` 
 **Requirements**
 - A C99-capable compiler (developed with MinGW on Windows)
 - [raylib](https://www.raylib.com/)
+- To run the start Menu Video Background need the ffmpeg version
+- RUN in the folder terminal(winget install "FFmpeg(Essentials Build)"
 
 ```bash
 gcc MAINGAME.c -o game.exe -I include -L lib -lraylib -lopengl32 -lgdi32 -lwinmm
